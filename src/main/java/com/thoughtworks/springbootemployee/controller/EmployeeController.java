@@ -28,19 +28,12 @@ public class EmployeeController {
 
     @GetMapping(params = "gender")
     public List<Employee> getEmployeesByGender(@RequestParam String gender) {
-        return this.employees
-                .stream()
-                .filter(employee -> employee.getGender().equals(gender))
-                .collect(Collectors.toList());
+        return employeeService.getEmployeesByGender(gender);
     }
 
     @GetMapping(params = {"page", "pageSize"})
     public List<Employee> getEmployeesInPage(@RequestParam Integer page, @RequestParam Integer pageSize) {
-        return this.employees
-                .stream()
-                .skip((page - 1) * pageSize)
-                .limit(pageSize)
-                .collect(Collectors.toList());
+        return employeeService.getEmployeesPaginized(page, pageSize);
     }
 
     @PostMapping
@@ -50,7 +43,7 @@ public class EmployeeController {
 
     @PutMapping("/{employeeId}")
     public Employee updateEmployee(@PathVariable Integer employeeId, @RequestBody Employee employeeUpdate) {
-        return employeeService.updateEmployee(employeeUpdate);
+        return employeeService.updateEmployee(employeeId, employeeUpdate);
     }
 
     @DeleteMapping("/{employeeId}")
