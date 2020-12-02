@@ -49,4 +49,20 @@ public class CompanyServiceTest {
         //then
         assertEquals(expected, company);
     }
+
+    @Test
+    public void should_return_list_of_employee_when_get_employees_of_company_given_a_company() {
+        //given
+        CompanyRepository companyRepository = new CompanyRepository();
+        CompanyService companyService = new CompanyService(companyRepository);
+
+        Company expected = new Company(1, "Facebook", 0, new ArrayList<>());
+        companyRepository.create(expected);
+
+        //when
+        List<Employee> employees = companyService.getEmployeesOfCompany(1);
+
+        //then
+        assertEquals(expected.getEmployees(), employees);
+    }
 }
