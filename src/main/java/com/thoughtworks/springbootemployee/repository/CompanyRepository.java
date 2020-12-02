@@ -55,4 +55,7 @@ public class CompanyRepository {
                 });
         return companyUpdated;
     }
+
+    public void delete(Integer companyId) {
+    }
 }

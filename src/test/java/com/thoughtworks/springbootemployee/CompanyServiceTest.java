@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class CompanyServiceTest {
     @Test
@@ -164,5 +165,29 @@ public class CompanyServiceTest {
 
         //then
         assertEquals(expected, company);
+    }
+
+    @Test
+    void should_return_null_when_delete_given_a_company_id() {
+        //given
+        EmployeeRepository employeeRepository = new EmployeeRepository();
+        EmployeeService employeeService = new EmployeeService(employeeRepository);
+
+        CompanyRepository companyRepository = new CompanyRepository();
+        CompanyService companyService = new CompanyService(companyRepository);
+        final List<Employee> employeesList = new ArrayList<>();
+        employeesList.add(new Employee(1, "Marcus", 22, "male", 50));
+        employeesList.add(new Employee(2, "Theo", 22, "male", 50000));
+        employeesList.forEach(employeeRepository::create);
+
+        final Company expected = new Company("Google", 1,employeesList.size(), employeesList);
+        companyService.createCompany(expected);
+
+        //when
+        companyService.deleteCompany(expected.getCompanyId());
+        final Company company = companyService.getCompany(expected.getCompanyId());
+
+        //then
+        assertNull(company);
     }
 }
