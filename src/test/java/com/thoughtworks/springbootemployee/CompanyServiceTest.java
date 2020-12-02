@@ -35,7 +35,6 @@ public class CompanyServiceTest {
     void should_return_all_companies_when_get_all_given_all_companies() {
         //given
         EmployeeRepository employeeRepository = new EmployeeRepository();
-        EmployeeService employeeService = new EmployeeService(employeeRepository);
 
         CompanyRepository companyRepository = new CompanyRepository();
         CompanyService companyService = new CompanyService(companyRepository);
@@ -60,7 +59,6 @@ public class CompanyServiceTest {
     void should_return_a_company_when_get_company_given_a_company() {
         //given
         EmployeeRepository employeeRepository = new EmployeeRepository();
-        EmployeeService employeeService = new EmployeeService(employeeRepository);
 
         CompanyRepository companyRepository = new CompanyRepository();
         CompanyService companyService = new CompanyService(companyRepository);
@@ -69,7 +67,6 @@ public class CompanyServiceTest {
         employeesList.add(new Employee(employeeId2, employee2, age, male, salary));
         employeesList.forEach(employeeRepository::create);
 
-        final List<Company> companyList = new ArrayList<>();
         final Company expected = new Company(companyName1, companyId1, employeesList.size(), employeesList);
         companyRepository.create(expected);
 
@@ -84,7 +81,6 @@ public class CompanyServiceTest {
     void should_return_employee_list_when_get_a_company_employee_list_given_a_company() {
         //given
         EmployeeRepository employeeRepository = new EmployeeRepository();
-        EmployeeService employeeService = new EmployeeService(employeeRepository);
 
         CompanyRepository companyRepository = new CompanyRepository();
         CompanyService companyService = new CompanyService(companyRepository);
@@ -108,7 +104,6 @@ public class CompanyServiceTest {
     void should_return_correct_page_when_get_all_given_all_companies_and_page_with_page_size() {
         //given
         EmployeeRepository employeeRepository = new EmployeeRepository();
-        EmployeeService employeeService = new EmployeeService(employeeRepository);
 
         CompanyRepository companyRepository = new CompanyRepository();
         CompanyService companyService = new CompanyService(companyRepository);
@@ -138,7 +133,6 @@ public class CompanyServiceTest {
     void should_return_a_company_when_create_given_a_company() {
         //given
         EmployeeRepository employeeRepository = new EmployeeRepository();
-        EmployeeService employeeService = new EmployeeService(employeeRepository);
 
         CompanyRepository companyRepository = new CompanyRepository();
         CompanyService companyService = new CompanyService(companyRepository);
@@ -161,7 +155,6 @@ public class CompanyServiceTest {
     void should_return_updated_company_when_update_given_a_company_id_and_company_updates() {
         //given
         EmployeeRepository employeeRepository = new EmployeeRepository();
-        EmployeeService employeeService = new EmployeeService(employeeRepository);
 
         CompanyRepository companyRepository = new CompanyRepository();
         CompanyService companyService = new CompanyService(companyRepository);
@@ -186,7 +179,6 @@ public class CompanyServiceTest {
     void should_return_null_when_delete_given_a_company_id() {
         //given
         EmployeeRepository employeeRepository = new EmployeeRepository();
-        EmployeeService employeeService = new EmployeeService(employeeRepository);
 
         CompanyRepository companyRepository = new CompanyRepository();
         CompanyService companyService = new CompanyService(companyRepository);
