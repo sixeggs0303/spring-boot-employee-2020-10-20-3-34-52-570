@@ -19,4 +19,8 @@ public class EmployeeService {
     public List<Employee> getEmployees(){
         return employeeRepository.findAll();
     }
+
+    public Employee getEmployee(Integer employeeId) {
+        return employeeRepository.find(employeeId);
+    }
 }

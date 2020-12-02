@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EmployeeServiceTest {
     @Test
-    void should_return_all_employees_when_get_all_given_all_employees(){
+    void should_return_all_employees_when_get_all_given_all_employees() {
         //given
         EmployeeRepository employeeRepository = new EmployeeRepository();
         EmployeeService employeeService = new EmployeeService(employeeRepository);
@@ -27,5 +27,20 @@ public class EmployeeServiceTest {
 
         //then
         assertEquals(expected, employees);
+    }
+
+    @Test
+    void should_return_an_employee_when_get_employee_given_an_employee() {
+        //given
+        EmployeeRepository employeeRepository = new EmployeeRepository();
+        EmployeeService employeeService = new EmployeeService(employeeRepository);
+        Employee expected = new Employee(1, "Marcus", 22, "male", 50);
+        employeeRepository.create(expected);
+
+        //when
+        final Employee employee = employeeService.getEmployee(expected.getId());
+
+        //then
+        assertEquals(expected, employee);
     }
 }
