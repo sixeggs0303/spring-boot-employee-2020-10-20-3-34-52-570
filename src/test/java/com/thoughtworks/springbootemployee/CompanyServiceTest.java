@@ -3,9 +3,7 @@ package com.thoughtworks.springbootemployee;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
-import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import com.thoughtworks.springbootemployee.service.CompanyService;
-import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -13,6 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class CompanyServiceTest {
     @Test
@@ -114,9 +113,25 @@ public class CompanyServiceTest {
         Integer companyId = expected.getCompanyId();
 
         //when
-        companyService.updateCompanies(companyId, expected);
+        companyService.updateCompany(companyId, expected);
 
         //then
         assertEquals(expected, companyService.getCompany(companyId));
+    }
+
+    @Test
+    void should_return_null_when_delete_company_given_a_company_id() {
+        //given
+        CompanyRepository companyRepository = new CompanyRepository();
+        CompanyService companyService = new CompanyService(companyRepository);
+        Company expected = new Company(1, "Google", 0, new ArrayList<>());
+        companyService.createCompany(expected);
+        Integer companyId = expected.getCompanyId();
+
+        //when
+        companyService.deleteCompany(companyId);
+
+        //then
+        assertNull(companyService.getCompany(companyId));
     }
 }
