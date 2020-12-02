@@ -9,7 +9,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
-    private List<Employee> employees = new ArrayList<>();
+    private final List<Employee> employees = new ArrayList<>();
 
     @GetMapping
     public List<Employee> getAll() {
@@ -18,7 +18,7 @@ public class EmployeeController {
 
     @GetMapping("/{employeeID}")
     public Employee getEmployee(@PathVariable Integer employeeID) {
-        return this.employees.stream().filter(employee -> employee.getId() == employeeID).findFirst().orElse(null);
+        return this.employees.stream().filter(employee -> employee.getId().equals(employeeID)).findFirst().orElse(null);
     }
 
     @PostMapping
