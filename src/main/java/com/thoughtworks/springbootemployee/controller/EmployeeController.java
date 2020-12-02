@@ -12,12 +12,17 @@ public class EmployeeController {
     private List<Employee> employees = new ArrayList<>();
 
     @GetMapping
-    public List<Employee> getAll(){
+    public List<Employee> getAll() {
         return employees;
     }
 
+    @GetMapping("/{employeeID}")
+    public Employee getEmployee(@PathVariable Integer employeeID) {
+        return this.employees.stream().filter(employee -> employee.getId() == employeeID).findFirst().orElse(null);
+    }
+
     @PostMapping
-    public Employee create(@RequestBody Employee employeeUpdate){
+    public Employee create(@RequestBody Employee employeeUpdate) {
         employees.add(employeeUpdate);
         return employeeUpdate;
     }
