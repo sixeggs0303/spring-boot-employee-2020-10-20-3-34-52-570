@@ -11,7 +11,7 @@ public class CompanyRepository {
     private List<Company> companies = new ArrayList<>();
 
     public List<Company> findAll(){
-        return null;
+        return this.companies;
     }
 
     public Company create(Company company){
