@@ -18,4 +18,11 @@ public class CompanyRepository {
         this.companies.add(company);
         return company;
     }
+
+    public Company find(Integer companyId) {
+        return this.companies.stream()
+                .filter(company -> companyId.equals(company.getCompanyId()))
+                .findFirst()
+                .orElse(null);
+    }
 }

@@ -23,4 +23,8 @@ public class CompanyService {
     public Company createCompany(Company company){
         return companyRepository.create(company);
     }
+
+    public Company getCompany(int companyId) {
+        return companyRepository.find(companyId);
+    }
 }
