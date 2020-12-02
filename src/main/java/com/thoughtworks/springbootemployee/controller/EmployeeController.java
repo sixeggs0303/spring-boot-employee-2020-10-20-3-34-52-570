@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/employees")
@@ -13,7 +14,7 @@ public class EmployeeController {
 
     @GetMapping
     public List<Employee> getAll() {
-        return employees;
+        return this.employees;
     }
 
     @GetMapping("/{employeeId}")
@@ -23,6 +24,14 @@ public class EmployeeController {
                 .filter(employee -> employee.getId().equals(employeeId))
                 .findFirst()
                 .orElse(null);
+    }
+
+    @GetMapping(params = "gender")
+    public List<Employee> getEmployeesByGender(@RequestParam String gender){
+        return this.employees
+                .stream()
+                .filter(employee -> employee.getGender().equals(gender))
+                .collect(Collectors.toList());
     }
 
     @PostMapping
