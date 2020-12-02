@@ -13,7 +13,7 @@ public class EmployeeController {
     private final List<Employee> employees = new ArrayList<>();
 
     @GetMapping
-    public List<Employee> getAll() {
+    public List<Employee> getEmployees() {
         return this.employees;
     }
 
@@ -35,13 +35,13 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public Employee create(@RequestBody Employee employeeUpdate) {
+    public Employee createEmployee(@RequestBody Employee employeeUpdate) {
         employees.add(employeeUpdate);
         return employeeUpdate;
     }
 
     @PutMapping("/{employeeId}")
-    public Employee update(@PathVariable Integer employeeId, @RequestBody Employee employeeUpdate) {
+    public Employee updateEmployee(@PathVariable Integer employeeId, @RequestBody Employee employeeUpdate) {
         employees.stream()
                 .filter(employee -> employeeId.equals(employee.getId()))
                 .findFirst()
