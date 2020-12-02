@@ -27,10 +27,19 @@ public class EmployeeController {
     }
 
     @GetMapping(params = "gender")
-    public List<Employee> getEmployeesByGender(@RequestParam String gender){
+    public List<Employee> getEmployeesByGender(@RequestParam String gender) {
         return this.employees
                 .stream()
                 .filter(employee -> employee.getGender().equals(gender))
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping(params = {"page", "pageSize"})
+    public List<Employee> getEmployeesInPage(@RequestParam Integer page, @RequestParam Integer pageSize) {
+        return this.employees
+                .stream()
+                .skip((page - 1) * pageSize)
+                .limit(pageSize)
                 .collect(Collectors.toList());
     }
 
@@ -57,6 +66,6 @@ public class EmployeeController {
         employees.stream()
                 .filter(employee -> employeeId.equals(employee.getId()))
                 .findFirst()
-                .ifPresent(employee -> employees.remove(employee));
+                .ifPresent(employees::remove);
     }
 }
