@@ -36,4 +36,8 @@ public class CompanyService {
     public List<Company> getCompaniesPaginized(int page, int pageSize) {
         return companyRepository.findAll(page, pageSize);
     }
+
+    public Company updateCompany(Integer companyId, Company companyUpdated) {
+        return companyRepository.update(companyId, companyUpdated);
+    }
 }

@@ -44,4 +44,8 @@ public class CompanyRepository {
                 .orElse(null))
                 .getEmployees();
     }
+
+    public Company update(Integer companyId, Company companyUpdated) {
+        return null;
+    }
 }

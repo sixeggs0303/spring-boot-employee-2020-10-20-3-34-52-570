@@ -140,4 +140,29 @@ public class CompanyServiceTest {
         //then
         assertEquals(expected, company);
     }
+
+    @Test
+    void should_return_updated_company_when_update_given_a_company_id_and_company_updates() {
+        //given
+        EmployeeRepository employeeRepository = new EmployeeRepository();
+        EmployeeService employeeService = new EmployeeService(employeeRepository);
+
+        CompanyRepository companyRepository = new CompanyRepository();
+        CompanyService companyService = new CompanyService(companyRepository);
+        final List<Employee> employeesList = new ArrayList<>();
+        employeesList.add(new Employee(1, "Marcus", 22, "male", 50));
+        employeesList.add(new Employee(2, "Theo", 22, "male", 50000));
+        employeesList.forEach(employeeRepository::create);
+
+        final Company beforeUpdateCompany = new Company("Google", 1,employeesList.size(), employeesList);
+        companyService.createCompany(beforeUpdateCompany);
+        final Company expected = new Company("Facebook", 1,employeesList.size(), employeesList);
+
+        //when
+        companyService.updateCompany(expected.getCompanyId(), expected);
+        final Company company = companyService.getCompany(expected.getCompanyId());
+
+        //then
+        assertEquals(expected, company);
+    }
 }
