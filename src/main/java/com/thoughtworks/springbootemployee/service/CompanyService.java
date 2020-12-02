@@ -13,15 +13,15 @@ public class CompanyService {
     @Autowired
     private CompanyRepository companyRepository;
 
-    public CompanyService(CompanyRepository companyRepository){
+    public CompanyService(CompanyRepository companyRepository) {
         this.companyRepository = companyRepository;
     }
 
-    public List<Company> getCompanies(){
+    public List<Company> getCompanies() {
         return companyRepository.findAll();
     }
 
-    public Company createCompany(Company company){
+    public Company createCompany(Company company) {
         return companyRepository.create(company);
     }
 

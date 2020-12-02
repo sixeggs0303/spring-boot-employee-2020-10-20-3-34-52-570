@@ -8,7 +8,7 @@ public class Company {
     private Integer employeesNumber;
     private List<Employee> employees;
 
-    public Company(String companyName, Integer companyId,Integer employeesNumber, List<Employee> employees) {
+    public Company(String companyName, Integer companyId, Integer employeesNumber, List<Employee> employees) {
         this.companyName = companyName;
         this.companyId = companyId;
         this.employeesNumber = employeesNumber;
@@ -19,7 +19,8 @@ public class Company {
         return companyId;
     }
 
-    public Company(){ }
+    public Company() {
+    }
 
     public Integer getEmployeesNumber() {
         return employeesNumber;

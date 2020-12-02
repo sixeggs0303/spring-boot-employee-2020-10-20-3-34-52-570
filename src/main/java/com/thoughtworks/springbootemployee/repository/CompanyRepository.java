@@ -13,11 +13,11 @@ import java.util.stream.Collectors;
 public class CompanyRepository {
     private List<Company> companies = new ArrayList<>();
 
-    public List<Company> findAll(){
+    public List<Company> findAll() {
         return this.companies;
     }
 
-    public List<Company> findAll(Integer page, Integer pageSize){
+    public List<Company> findAll(Integer page, Integer pageSize) {
         return this.companies
                 .stream()
                 .skip((page - 1) * pageSize)
@@ -25,7 +25,7 @@ public class CompanyRepository {
                 .collect(Collectors.toList());
     }
 
-    public Company create(Company company){
+    public Company create(Company company) {
         this.companies.add(company);
         return company;
     }
@@ -37,7 +37,7 @@ public class CompanyRepository {
                 .orElse(null);
     }
 
-    public List<Employee> findEmployees(Integer companyId){
+    public List<Employee> findEmployees(Integer companyId) {
         return Objects.requireNonNull(this.companies.stream()
                 .filter(company -> companyId.equals(company.getCompanyId()))
                 .findFirst()

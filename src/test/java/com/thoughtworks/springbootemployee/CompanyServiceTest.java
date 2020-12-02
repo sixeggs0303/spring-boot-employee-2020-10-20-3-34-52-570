@@ -45,8 +45,8 @@ public class CompanyServiceTest {
         employeesList.forEach(employeeRepository::create);
 
         final List<Company> expected = new ArrayList<>();
-        expected.add(new Company(companyName1, companyId1,employeesList.size(), employeesList));
-        expected.add(new Company(companyName2, companyId2,employeesList.size(), employeesList));
+        expected.add(new Company(companyName1, companyId1, employeesList.size(), employeesList));
+        expected.add(new Company(companyName2, companyId2, employeesList.size(), employeesList));
         expected.forEach(companyRepository::create);
 
         //when
@@ -70,7 +70,7 @@ public class CompanyServiceTest {
         employeesList.forEach(employeeRepository::create);
 
         final List<Company> companyList = new ArrayList<>();
-        final Company expected = new Company(companyName1, companyId1,employeesList.size(), employeesList);
+        final Company expected = new Company(companyName1, companyId1, employeesList.size(), employeesList);
         companyRepository.create(expected);
 
         //when
@@ -94,7 +94,7 @@ public class CompanyServiceTest {
         expectedEmployeesList.forEach(employeeRepository::create);
 
         final List<Company> companyList = new ArrayList<>();
-        final Company expected = new Company(companyName1, companyId1,expectedEmployeesList.size(), expectedEmployeesList);
+        final Company expected = new Company(companyName1, companyId1, expectedEmployeesList.size(), expectedEmployeesList);
         companyRepository.create(expected);
 
         //when
@@ -118,9 +118,9 @@ public class CompanyServiceTest {
         employeesList.forEach(employeeRepository::create);
 
         final List<Company> fullList = new ArrayList<>();
-        fullList.add(new Company(companyName1, companyId1,employeesList.size(), employeesList));
-        fullList.add(new Company(companyName2, companyId2,employeesList.size(), employeesList));
-        fullList.add(new Company(companyName3, companyId3,employeesList.size(), employeesList));
+        fullList.add(new Company(companyName1, companyId1, employeesList.size(), employeesList));
+        fullList.add(new Company(companyName2, companyId2, employeesList.size(), employeesList));
+        fullList.add(new Company(companyName3, companyId3, employeesList.size(), employeesList));
         fullList.forEach(companyRepository::create);
 
         final List<Company> expected = fullList.stream()
@@ -147,7 +147,7 @@ public class CompanyServiceTest {
         employeesList.add(new Employee(employeeId2, employee2, age, male, salary));
         employeesList.forEach(employeeRepository::create);
 
-        final Company expected = new Company(companyName1, companyId1,employeesList.size(), employeesList);
+        final Company expected = new Company(companyName1, companyId1, employeesList.size(), employeesList);
 
         //when
         companyService.createCompany(expected);
@@ -170,9 +170,9 @@ public class CompanyServiceTest {
         employeesList.add(new Employee(employeeId2, employee2, age, male, salary));
         employeesList.forEach(employeeRepository::create);
 
-        final Company beforeUpdateCompany = new Company(companyName1, companyId1,employeesList.size(), employeesList);
+        final Company beforeUpdateCompany = new Company(companyName1, companyId1, employeesList.size(), employeesList);
         companyService.createCompany(beforeUpdateCompany);
-        final Company expected = new Company(companyName2, companyId1,employeesList.size(), employeesList);
+        final Company expected = new Company(companyName2, companyId1, employeesList.size(), employeesList);
 
         //when
         companyService.updateCompany(expected.getCompanyId(), expected);
@@ -195,7 +195,7 @@ public class CompanyServiceTest {
         employeesList.add(new Employee(employeeId2, employee2, age, male, salary));
         employeesList.forEach(employeeRepository::create);
 
-        final Company expected = new Company(companyName1, 1,employeesList.size(), employeesList);
+        final Company expected = new Company(companyName1, 1, employeesList.size(), employeesList);
         companyService.createCompany(expected);
 
         //when
