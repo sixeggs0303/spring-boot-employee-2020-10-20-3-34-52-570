@@ -43,4 +43,19 @@ public class EmployeeServiceTest {
         //then
         assertEquals(expected, employee);
     }
+
+    @Test
+    void should_return_created_employee_when_create_employee_given_an_employee() {
+        //given
+        EmployeeRepository employeeRepository = new EmployeeRepository();
+        EmployeeService employeeService = new EmployeeService(employeeRepository);
+        Employee expected = new Employee(1, "Marcus", 22, "male", 50);
+
+        //when
+        employeeService.createEmployee(expected);
+        final Employee employee = employeeService.getEmployee(expected.getId());
+
+        //then
+        assertEquals(expected, employee);
+    }
 }

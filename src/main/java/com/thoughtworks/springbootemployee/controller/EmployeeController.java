@@ -23,11 +23,7 @@ public class EmployeeController {
 
     @GetMapping("/{employeeId}")
     public Employee getEmployee(@PathVariable Integer employeeId) {
-        return this.employees
-                .stream()
-                .filter(employee -> employee.getId().equals(employeeId))
-                .findFirst()
-                .orElse(null);
+        return employeeService.getEmployee(employeeId);
     }
 
     @GetMapping(params = "gender")
@@ -49,27 +45,16 @@ public class EmployeeController {
 
     @PostMapping
     public Employee createEmployee(@RequestBody Employee employeeUpdate) {
-        employees.add(employeeUpdate);
-        return employeeUpdate;
+        return employeeService.createEmployee(employeeUpdate);
     }
 
     @PutMapping("/{employeeId}")
     public Employee updateEmployee(@PathVariable Integer employeeId, @RequestBody Employee employeeUpdate) {
-        employees.stream()
-                .filter(employee -> employeeId.equals(employee.getId()))
-                .findFirst()
-                .ifPresent(employee -> {
-                    employees.remove(employee);
-                    employees.add(employeeUpdate);
-                });
-        return employeeUpdate;
+        return employeeService.updateEmployee(employeeUpdate);
     }
 
     @DeleteMapping("/{employeeId}")
     public void deleteEmployee(@PathVariable Integer employeeId) {
-        employees.stream()
-                .filter(employee -> employeeId.equals(employee.getId()))
-                .findFirst()
-                .ifPresent(employees::remove);
+        employeeService.deleteEmployee(employeeId);
     }
 }

@@ -23,4 +23,16 @@ public class EmployeeService {
     public Employee getEmployee(Integer employeeId) {
         return employeeRepository.find(employeeId);
     }
+
+    public Employee createEmployee(Employee employee){
+        return employeeRepository.create(employee);
+    }
+
+    public Employee updateEmployee(Employee employee){
+        return employeeRepository.update(employee);
+    }
+
+    public void deleteEmployee(Integer employeeId){
+        employeeRepository.delete(employeeId);
+    }
 }
