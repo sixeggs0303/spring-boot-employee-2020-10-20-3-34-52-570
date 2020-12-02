@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class EmployeeServiceTest {
     @Test
@@ -116,10 +117,26 @@ public class EmployeeServiceTest {
         Employee expected = new Employee(1, "Theo", 22, "male", 5000);
 
         //when
-        employeeService.updateEmployee(1,expected);
+        employeeService.updateEmployee(1, expected);
         final Employee employee = employeeService.getEmployee(expected.getId());
 
         //then
         assertEquals(expected, employee);
+    }
+
+    @Test
+    void should_return_null_when_delete_employee_given_an_employee_id() {
+        //given
+        EmployeeRepository employeeRepository = new EmployeeRepository();
+        EmployeeService employeeService = new EmployeeService(employeeRepository);
+        Employee expected = new Employee(1, "Marcus", 22, "male", 50);
+        employeeService.createEmployee(expected);
+
+        //when
+        employeeService.deleteEmployee(1);
+        final Employee employee = employeeService.getEmployee(expected.getId());
+
+        //then
+        assertNull(employee);
     }
 }
