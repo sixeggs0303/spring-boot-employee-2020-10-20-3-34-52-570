@@ -117,4 +117,27 @@ public class CompanyServiceTest {
         //then
         assertEquals(expected, companies);
     }
+
+    @Test
+    void should_return_a_company_when_create_given_a_company() {
+        //given
+        EmployeeRepository employeeRepository = new EmployeeRepository();
+        EmployeeService employeeService = new EmployeeService(employeeRepository);
+
+        CompanyRepository companyRepository = new CompanyRepository();
+        CompanyService companyService = new CompanyService(companyRepository);
+        final List<Employee> employeesList = new ArrayList<>();
+        employeesList.add(new Employee(1, "Marcus", 22, "male", 50));
+        employeesList.add(new Employee(2, "Theo", 22, "male", 50000));
+        employeesList.forEach(employeeRepository::create);
+
+        final Company expected = new Company("Google", 1,employeesList.size(), employeesList);
+
+        //when
+        companyService.createCompany(expected);
+        final Company company = companyService.getCompany(expected.getCompanyId());
+
+        //then
+        assertEquals(expected, company);
+    }
 }
