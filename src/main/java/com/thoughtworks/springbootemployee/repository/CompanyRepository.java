@@ -49,13 +49,17 @@ public class CompanyRepository {
         companies.stream()
                 .filter(company -> companyId.equals(company.getCompanyId()))
                 .findFirst()
-                .ifPresent(employee -> {
-                    companies.remove(employee);
+                .ifPresent(company -> {
+                    companies.remove(company);
                     companies.add(companyUpdated);
                 });
         return companyUpdated;
     }
 
     public void delete(Integer companyId) {
+        companies.stream()
+                .filter(company -> companyId.equals(company.getCompanyId()))
+                .findFirst()
+                .ifPresent(company -> companies.remove(company));
     }
 }
