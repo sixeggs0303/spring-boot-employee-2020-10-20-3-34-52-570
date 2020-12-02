@@ -6,7 +6,6 @@ import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,14 +13,25 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class EmployeeServiceTest {
+    private final String employee1 = "Marcus";
+    private final String employee2 = "Theo";
+    private final String employee3 = "Linne";
+    private final Integer age = 22;
+    private final String male = "male";
+    private final String female = "female";
+    private final Integer employeeId1 = 1;
+    private final Integer employeeId2 = 2;
+    private final Integer employeeId3 = 3;
+    private final Integer salary = 10000;
+
     @Test
     void should_return_all_employees_when_get_all_given_all_employees() {
         //given
         EmployeeRepository employeeRepository = new EmployeeRepository();
         EmployeeService employeeService = new EmployeeService(employeeRepository);
         final List<Employee> expected = new ArrayList<>();
-        expected.add(new Employee(1, "Marcus", 22, "male", 50));
-        expected.add(new Employee(2, "Theo", 22, "male", 50000));
+        expected.add(new Employee(employeeId1, employee1, age, male, salary));
+        expected.add(new Employee(employeeId2, employee2, age, male, salary));
         expected.forEach(employeeRepository::create);
 
         //when
@@ -36,7 +46,7 @@ public class EmployeeServiceTest {
         //given
         EmployeeRepository employeeRepository = new EmployeeRepository();
         EmployeeService employeeService = new EmployeeService(employeeRepository);
-        Employee expected = new Employee(1, "Marcus", 22, "male", 50);
+        Employee expected = new Employee(employeeId1, employee1, age, male, salary);
         employeeRepository.create(expected);
 
         //when
@@ -52,9 +62,9 @@ public class EmployeeServiceTest {
         EmployeeRepository employeeRepository = new EmployeeRepository();
         EmployeeService employeeService = new EmployeeService(employeeRepository);
         final List<Employee> fullList = new ArrayList<>();
-        fullList.add(new Employee(1, "Marcus", 22, "male", 50));
-        fullList.add(new Employee(2, "Theo", 22, "male", 50000));
-        fullList.add(new Employee(3, "Linne", 22, "female", 500000));
+        fullList.add(new Employee(employeeId1, employee1, age, male, salary));
+        fullList.add(new Employee(employeeId2, employee2, age, male, salary));
+        fullList.add(new Employee(employeeId3, employee3, age, female, salary));
         fullList.forEach(employeeRepository::create);
 
         final List<Employee> expected = fullList.stream()
@@ -75,9 +85,9 @@ public class EmployeeServiceTest {
         EmployeeRepository employeeRepository = new EmployeeRepository();
         EmployeeService employeeService = new EmployeeService(employeeRepository);
         final List<Employee> fullList = new ArrayList<>();
-        fullList.add(new Employee(1, "Marcus", 22, "male", 50));
-        fullList.add(new Employee(2, "Theo", 22, "male", 50000));
-        fullList.add(new Employee(3, "Linne", 22, "female", 500000));
+        fullList.add(new Employee(employeeId1, employee1, age, male, salary));
+        fullList.add(new Employee(employeeId2, employee2, age, male, salary));
+        fullList.add(new Employee(employeeId3, employee3, age, female, salary));
         fullList.forEach(employeeRepository::create);
 
         final List<Employee> expected = fullList.stream()
@@ -97,7 +107,7 @@ public class EmployeeServiceTest {
         //given
         EmployeeRepository employeeRepository = new EmployeeRepository();
         EmployeeService employeeService = new EmployeeService(employeeRepository);
-        Employee expected = new Employee(1, "Marcus", 22, "male", 50);
+        Employee expected = new Employee(employeeId1, employee1, age, male, salary);
 
         //when
         employeeService.createEmployee(expected);
@@ -114,7 +124,7 @@ public class EmployeeServiceTest {
         EmployeeService employeeService = new EmployeeService(employeeRepository);
         Employee beforeUpdateEmployee = new Employee(1, "Marcus", 22, "male", 50);
         employeeService.createEmployee(beforeUpdateEmployee);
-        Employee expected = new Employee(1, "Theo", 22, "male", 5000);
+        Employee expected = new Employee(employeeId1, employee1, age, male, salary);
 
         //when
         employeeService.updateEmployee(1, expected);
@@ -129,7 +139,7 @@ public class EmployeeServiceTest {
         //given
         EmployeeRepository employeeRepository = new EmployeeRepository();
         EmployeeService employeeService = new EmployeeService(employeeRepository);
-        Employee expected = new Employee(1, "Marcus", 22, "male", 50);
+        Employee expected = new Employee(employeeId1, employee1, age, male, salary);
         employeeService.createEmployee(expected);
 
         //when
