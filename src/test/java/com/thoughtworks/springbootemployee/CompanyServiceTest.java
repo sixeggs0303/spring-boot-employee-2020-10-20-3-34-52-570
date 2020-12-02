@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -64,5 +65,24 @@ public class CompanyServiceTest {
 
         //then
         assertEquals(expected.getEmployees(), employees);
+    }
+
+    @Test
+    public void should_return_first_page_of_companies_when_get_company_paginated_given_page_and_page_size() {
+        //given
+        CompanyRepository companyRepository = new CompanyRepository();
+        CompanyService companyService = new CompanyService(companyRepository);
+        List<Company> expected = new ArrayList<>();
+        expected.add(new Company(1, "Google", 0, new ArrayList<>()));
+        expected.add(new Company(2, "Facebook", 0, new ArrayList<>()));
+        expected.add(new Company(3, "Apple", 0, new ArrayList<>()));
+        expected.forEach(companyRepository::create);
+        expected = expected.stream().skip(2).collect(Collectors.toList());
+
+        //when
+        final List<Company> companies = companyService.getCompaniesPaginated(2, 2);
+
+        //then
+        assertEquals(expected, companies);
     }
 }
