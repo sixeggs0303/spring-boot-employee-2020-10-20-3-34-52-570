@@ -33,4 +33,20 @@ public class CompanyServiceTest {
         //then
         assertEquals(expected, companies);
     }
+
+    @Test
+    public void should_return_a_company_when_get_company_given_a_company() {
+        //given
+        CompanyRepository companyRepository = new CompanyRepository();
+        CompanyService companyService = new CompanyService(companyRepository);
+
+        Company expected = new Company(1, "Facebook", 0, new ArrayList<>());
+        companyRepository.create(expected);
+
+        //when
+        Company company = companyService.getCompany(1);
+
+        //then
+        assertEquals(expected, company);
+    }
 }
