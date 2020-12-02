@@ -16,14 +16,26 @@ public class EmployeeController {
         return employees;
     }
 
-    @GetMapping("/{employeeID}")
-    public Employee getEmployee(@PathVariable Integer employeeID) {
-        return this.employees.stream().filter(employee -> employee.getId().equals(employeeID)).findFirst().orElse(null);
+    @GetMapping("/{employeeId}")
+    public Employee getEmployee(@PathVariable Integer employeeId) {
+        return this.employees.stream().filter(employee -> employee.getId().equals(employeeId)).findFirst().orElse(null);
     }
 
     @PostMapping
     public Employee create(@RequestBody Employee employeeUpdate) {
         employees.add(employeeUpdate);
+        return employeeUpdate;
+    }
+
+    @PutMapping("/{employeeId}")
+    public Employee update(@PathVariable Integer employeeId, @RequestBody Employee employeeUpdate){
+        employees.stream()
+                .filter(employee -> employeeId.equals(employee.getId()))
+                .findFirst()
+                .ifPresent(employee -> {
+                    employees.remove(employee);
+                    employees.add(employeeUpdate);
+                });
         return employeeUpdate;
     }
 }
