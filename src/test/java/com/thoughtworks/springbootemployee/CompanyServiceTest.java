@@ -3,7 +3,9 @@ package com.thoughtworks.springbootemployee;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
+import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import com.thoughtworks.springbootemployee.service.CompanyService;
+import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -84,5 +86,20 @@ public class CompanyServiceTest {
 
         //then
         assertEquals(expected, companies);
+    }
+
+    @Test
+    void should_return_created_company_when_create_company_given_a_company() {
+        //given
+        CompanyRepository companyRepository = new CompanyRepository();
+        CompanyService companyService = new CompanyService(companyRepository);
+        Company expected = new Company(1, "Google", 0, new ArrayList<>());
+        Integer companyId = expected.getCompanyId();
+
+        //when
+        companyService.createCompanies(expected);
+
+        //then
+        assertEquals(expected, companyService.getCompany(companyId));
     }
 }
