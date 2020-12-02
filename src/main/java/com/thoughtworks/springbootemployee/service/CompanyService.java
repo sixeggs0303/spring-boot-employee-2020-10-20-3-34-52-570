@@ -32,4 +32,8 @@ public class CompanyService {
     public List<Employee> getEmployeeList(int companyId) {
         return companyRepository.findEmployees(companyId);
     }
+
+    public List<Company> getCompaniesPaginized(int page, int pageSize) {
+        return companyRepository.findAll(page, pageSize);
+    }
 }

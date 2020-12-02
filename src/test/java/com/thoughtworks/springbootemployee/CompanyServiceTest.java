@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -85,5 +86,35 @@ public class CompanyServiceTest {
 
         //then
         assertEquals(expectedEmployeesList, employeesList);
+    }
+
+    @Test
+    void should_return_correct_page_when_get_all_given_all_companies_and_page_with_page_size() {
+        //given
+        EmployeeRepository employeeRepository = new EmployeeRepository();
+        EmployeeService employeeService = new EmployeeService(employeeRepository);
+
+        CompanyRepository companyRepository = new CompanyRepository();
+        CompanyService companyService = new CompanyService(companyRepository);
+        final List<Employee> employeesList = new ArrayList<>();
+        employeesList.add(new Employee(1, "Marcus", 22, "male", 50));
+        employeesList.add(new Employee(2, "Theo", 22, "male", 50000));
+        employeesList.forEach(employeeRepository::create);
+
+        final List<Company> fullList = new ArrayList<>();
+        fullList.add(new Company("Google", 1,employeesList.size(), employeesList));
+        fullList.add(new Company("Facebook", 2,employeesList.size(), employeesList));
+        fullList.add(new Company("Apple", 3,employeesList.size(), employeesList));
+        fullList.forEach(companyRepository::create);
+
+        final List<Company> expected = fullList.stream()
+                .limit(2)
+                .collect(Collectors.toList());
+
+        //when
+        final List<Company> companies = companyService.getCompaniesPaginized(1, 2);
+
+        //then
+        assertEquals(expected, companies);
     }
 }

@@ -31,6 +31,11 @@ public class CompanyController {
         return companyService.getEmployeeList(companyId);
     }
 
+    @GetMapping(params = {"page", "pageSize"})
+    public List<Company> getEmployeesInPage(@RequestParam Integer page, @RequestParam Integer pageSize) {
+        return companyService.getCompaniesPaginized(page, pageSize);
+    }
+
     @PostMapping
     public Company createCompany(@RequestBody Company companyUpdate) {
         return companyService.createCompany(companyUpdate);
