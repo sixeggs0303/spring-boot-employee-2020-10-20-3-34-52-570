@@ -18,7 +18,11 @@ public class EmployeeController {
 
     @GetMapping("/{employeeId}")
     public Employee getEmployee(@PathVariable Integer employeeId) {
-        return this.employees.stream().filter(employee -> employee.getId().equals(employeeId)).findFirst().orElse(null);
+        return this.employees
+                .stream()
+                .filter(employee -> employee.getId().equals(employeeId))
+                .findFirst()
+                .orElse(null);
     }
 
     @PostMapping
@@ -28,7 +32,7 @@ public class EmployeeController {
     }
 
     @PutMapping("/{employeeId}")
-    public Employee update(@PathVariable Integer employeeId, @RequestBody Employee employeeUpdate){
+    public Employee update(@PathVariable Integer employeeId, @RequestBody Employee employeeUpdate) {
         employees.stream()
                 .filter(employee -> employeeId.equals(employee.getId()))
                 .findFirst()
@@ -37,5 +41,13 @@ public class EmployeeController {
                     employees.add(employeeUpdate);
                 });
         return employeeUpdate;
+    }
+
+    @DeleteMapping("/{employeeId}")
+    public void deleteEmployee(@PathVariable Integer employeeId) {
+        employees.stream()
+                .filter(employee -> employeeId.equals(employee.getId()))
+                .findFirst()
+                .ifPresent(employee -> employees.remove(employee));
     }
 }
