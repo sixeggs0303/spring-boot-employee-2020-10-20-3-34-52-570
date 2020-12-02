@@ -122,7 +122,7 @@ public class EmployeeServiceTest {
         //given
         EmployeeRepository employeeRepository = new EmployeeRepository();
         EmployeeService employeeService = new EmployeeService(employeeRepository);
-        Employee beforeUpdateEmployee = new Employee(1, "Marcus", 22, "male", 50);
+        Employee beforeUpdateEmployee = new Employee(employeeId1, employee1, age, male, salary);
         employeeService.createEmployee(beforeUpdateEmployee);
         Employee expected = new Employee(employeeId1, employee1, age, male, salary);
 
@@ -143,7 +143,7 @@ public class EmployeeServiceTest {
         employeeService.createEmployee(expected);
 
         //when
-        employeeService.deleteEmployee(1);
+        employeeService.deleteEmployee(expected.getId());
         final Employee employee = employeeService.getEmployee(expected.getId());
 
         //then
