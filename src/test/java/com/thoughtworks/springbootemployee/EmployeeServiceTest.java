@@ -69,6 +69,29 @@ public class EmployeeServiceTest {
     }
 
     @Test
+    void should_return_correct_page_when_get_employee_given_page_and_page_size() {
+        //given
+        EmployeeRepository employeeRepository = new EmployeeRepository();
+        EmployeeService employeeService = new EmployeeService(employeeRepository);
+        final List<Employee> fullList = new ArrayList<>();
+        fullList.add(new Employee(1, "Marcus", 22, "male", 50));
+        fullList.add(new Employee(2, "Theo", 22, "male", 50000));
+        fullList.add(new Employee(3, "Linne", 22, "female", 500000));
+        fullList.forEach(employeeRepository::create);
+
+        final List<Employee> expected = fullList.stream()
+                .limit(2)
+                .collect(Collectors.toList());
+
+        //when
+        final List<Employee> employees = employeeService.getEmployeesPaginized(1, 2);
+
+        //then
+
+        assertEquals(expected, employees);
+    }
+
+    @Test
     void should_return_created_employee_when_create_employee_given_an_employee() {
         //given
         EmployeeRepository employeeRepository = new EmployeeRepository();
