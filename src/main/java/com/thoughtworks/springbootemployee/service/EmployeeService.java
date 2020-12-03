@@ -2,7 +2,9 @@ package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
+import com.thoughtworks.springbootemployee.repository.EmployeeRepository1;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,36 +13,41 @@ import java.util.List;
 public class EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
+    @Autowired
+    private EmployeeRepository1 employeeRepository1;
 
-    public EmployeeService(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
+    public EmployeeService(EmployeeRepository1 employeeRepository1) {
+        this.employeeRepository1 = employeeRepository1;
     }
 
     public List<Employee> getEmployees() {
-        return employeeRepository.findAll();
+        return employeeRepository1.findAll();
     }
 
     public List<Employee> getEmployeesPaginized(Integer page, Integer pageSize) {
-        return employeeRepository.findAll(page, pageSize);
+        return employeeRepository1.findAll(PageRequest.of(page, pageSize)).toList();
     }
 
-    public Employee getEmployee(Integer employeeId) {
-        return employeeRepository.find(employeeId);
+    public Employee getEmployee(String employeeId) {
+        return employeeRepository1.findById(employeeId).orElse(null);
     }
 
     public List<Employee> getEmployeesByGender(String gender) {
-        return employeeRepository.findByGender(gender);
+        return employeeRepository1.findAllByGender(gender);
     }
 
     public Employee createEmployee(Employee employee) {
-        return employeeRepository.create(employee);
+        return employeeRepository1.save(employee);
     }
 
-    public Employee updateEmployee(Integer employeeId, Employee employee) {
-        return employeeRepository.update(employeeId, employee);
+    public Employee updateEmployee(String employeeId, Employee employee) {
+        if(getEmployee(employeeId)!=null){
+            return employeeRepository1.save(employee);
+        }
+        return null;
     }
 
-    public void deleteEmployee(Integer employeeId) {
-        employeeRepository.delete(employeeId);
+    public void deleteEmployee(String employeeId) {
+        employeeRepository1.deleteById(employeeId);
     }
 }

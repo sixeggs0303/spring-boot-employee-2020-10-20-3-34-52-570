@@ -21,7 +21,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{employeeId}")
-    public Employee getEmployee(@PathVariable Integer employeeId) {
+    public Employee getEmployee(@PathVariable String employeeId) {
         return employeeService.getEmployee(employeeId);
     }
 
@@ -41,12 +41,12 @@ public class EmployeeController {
     }
 
     @PutMapping("/{employeeId}")
-    public Employee updateEmployee(@PathVariable Integer employeeId, @RequestBody Employee employeeUpdate) {
+    public Employee updateEmployee(@PathVariable String employeeId, @RequestBody Employee employeeUpdate) {
         return employeeService.updateEmployee(employeeId, employeeUpdate);
     }
 
     @DeleteMapping("/{employeeId}")
-    public void deleteEmployee(@PathVariable Integer employeeId) {
+    public void deleteEmployee(@PathVariable String employeeId) {
         employeeService.deleteEmployee(employeeId);
     }
 }

@@ -1,12 +1,19 @@
 package com.thoughtworks.springbootemployee.model;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.FieldType;
+import org.springframework.data.mongodb.core.mapping.MongoId;
+
 import java.util.List;
 
+@Document
 public class Company {
+    @MongoId(FieldType.OBJECT_ID)
     private String companyName;
     private Integer companyId;
     private Integer employeesNumber;
     private List<Employee> employees;
+    private List<String> employeesId;
 
     // no need to have employee list
     public Company(String companyName, Integer companyId, Integer employeesNumber, List<Employee> employees) {
