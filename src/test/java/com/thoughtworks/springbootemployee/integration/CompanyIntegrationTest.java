@@ -196,5 +196,19 @@ public class CompanyIntegrationTest {
         assertEquals(0, companies.size());
     }
 
+    @Test
+    public void should_return_a_company_responses_when_get_one_given_a_company() throws Exception {
+        //given
+        Company company = new Company("Google", new ArrayList<>());
+        companyMongoRepository.save(company);
+
+        //when
+        //then
+        mockMvc.perform(get("/companies/" + company.getCompanyId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.companyName").value("Google"))
+                .andExpect(jsonPath("$.employeesNumber").value(0))
+                .andExpect(jsonPath("$.employees").value(new ArrayList<>()));
+    }
 
 }
