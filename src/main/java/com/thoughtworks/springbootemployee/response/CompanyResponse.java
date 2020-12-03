@@ -6,12 +6,12 @@ import java.util.List;
 
 public class CompanyResponse {
     private String companyName;
-    private int employeeNumber;
+    private int employeesNumber;
     private List<Employee> employees;
 
-    public CompanyResponse(String companyName, int employeeNumber, List<Employee> employees){
+    public CompanyResponse(String companyName, int employeesNumber, List<Employee> employees){
         this.companyName = companyName;
-        this.employeeNumber = employeeNumber;
+        this.employeesNumber = employeesNumber;
         this.employees = employees;
     }
 
@@ -19,8 +19,8 @@ public class CompanyResponse {
         this.companyName = companyName;
     }
 
-    public void setEmployeeNumber(int employeeNumber) {
-        this.employeeNumber = employeeNumber;
+    public void setEmployeesNumber(int employeesNumber) {
+        this.employeesNumber = employeesNumber;
     }
 
     public void setEmployees(List<Employee> employees) {
@@ -31,8 +31,8 @@ public class CompanyResponse {
         return companyName;
     }
 
-    public int getEmployeeNumber() {
-        return employeeNumber;
+    public int getEmployeesNumber() {
+        return employeesNumber;
     }
 
     public List<Employee> getEmployees() {
