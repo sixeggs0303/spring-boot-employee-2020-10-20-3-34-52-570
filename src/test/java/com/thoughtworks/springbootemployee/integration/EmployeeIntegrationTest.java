@@ -12,10 +12,10 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -48,11 +48,6 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$[0].age").value(18))
                 .andExpect(jsonPath("$[0].gender").value("male"))
                 .andExpect(jsonPath("$[0].salary").value(50000));
-
-        List<Employee> employees = employeeRepository1.findAll();
-        assertEquals(1, employees.size());
-        assertEquals("Theo", employees.get(0).getName());
-        assertEquals(18, employees.get(0).getAge());
     }
 
     @Test
@@ -69,10 +64,24 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$.age").value(18))
                 .andExpect(jsonPath("$.gender").value("male"))
                 .andExpect(jsonPath("$.salary").value(50000));
-        List<Employee> employees = employeeRepository1.findAll();
-        assertEquals(1, employees.size());
-        assertEquals("Theo", employees.get(0).getName());
-        assertEquals(18, employees.get(0).getAge());
+    }
+
+    @Test
+    void should_return_male_employees_when_get_employee_by_gender_given_gender_is_male() throws Exception {
+        //given
+        employeeRepository1.save(new Employee("Theo", 18, "male", 50000));
+        employeeRepository1.save(new Employee("Linne", 18, "female", 50000));
+
+        //when
+        //then
+        mockMvc.perform(get(EMPLOYEES_URI).param("gender", "male"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.*", hasSize(1)))
+                .andExpect(jsonPath("$[0].id").isString())
+                .andExpect(jsonPath("$[0].name").value("Theo"))
+                .andExpect(jsonPath("$[0].age").value(18))
+                .andExpect(jsonPath("$[0].gender").value("male"))
+                .andExpect(jsonPath("$[0].salary").value(50000));
     }
 
     @Test
