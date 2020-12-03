@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -28,6 +29,9 @@ public class CompanyIntegrationTest {
 
     @Autowired
     private CompanyRepository1 companyRepository;
+
+    @Autowired
+    private EmployeeRepository1 employeeRepository;
 
     @AfterEach
     void tearDown() {
@@ -63,6 +67,23 @@ public class CompanyIntegrationTest {
                 .andExpect(jsonPath("$.companyName").value("Facebook"))
                 .andExpect(jsonPath("$.employeesNumber").value(0))
                 .andExpect(jsonPath("$.employees").value(new ArrayList<>()));
+    }
+
+    @Test
+    void should_return_an_employee_list_when_get_employee_list_given_company_id() throws Exception {
+        //given
+        employeeRepository.save(new Employee("Theo", 18, "male", 50000));
+        employeeRepository.save(new Employee("Linne", 18, "female", 50000));
+        List<String> employeeIdList = new ArrayList<>();
+        employeeIdList.add("5fc8bb88a807b8276b16bbde");
+        employeeIdList.add("5fc8bb91a807b8276b16bbdf");
+        Company company = companyRepository.save(new Company("Facebook", employeeIdList));
+
+        //when
+        //then
+        mockMvc.perform(get(COMPANIES_URI+company.getCompanyId()+"/employees"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.*", hasSize(2)));
     }
 
     @Test
