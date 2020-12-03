@@ -17,8 +17,6 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
-    private final List<Employee> employees = new ArrayList<>();
-
     @Autowired
     private EmployeeService employeeService;
     @Autowired
