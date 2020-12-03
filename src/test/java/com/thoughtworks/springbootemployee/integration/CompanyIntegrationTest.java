@@ -181,4 +181,20 @@ public class CompanyIntegrationTest {
         List<Company> companies = companyRepository.findAll();
         assertEquals(0, companies.size());
     }
+
+    @Test
+    public void should_return_no_content_when_delete_given_company_id() throws Exception {
+        //given
+        Company company = companyMongoRepository.save(new Company("OOCL", new ArrayList<>()));
+
+        //when
+        //then
+        mockMvc.perform(delete("/companies/" + company.getCompanyId()))
+                .andExpect(status().isNoContent());
+
+        List<Company> companies = companyMongoRepository.findAll();
+        assertEquals(0, companies.size());
+    }
+
+
 }
