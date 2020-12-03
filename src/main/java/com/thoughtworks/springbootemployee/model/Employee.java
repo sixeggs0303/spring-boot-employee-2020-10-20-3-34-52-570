@@ -7,6 +7,7 @@ public class Employee {
     private String gender;
     private Integer salary;
 
+    // add company id to reference
     public Employee(int id, String name, int age, String gender, int salary) {
         this.id = id;
         this.name = name;

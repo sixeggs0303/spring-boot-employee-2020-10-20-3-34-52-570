@@ -94,11 +94,11 @@ public class EmployeeServiceTest {
                 .limit(2)
                 .collect(Collectors.toList());
 
+        // add page 2 as testing as well
         //when
         final List<Employee> employees = employeeService.getEmployeesPaginized(1, 2);
 
         //then
-
         assertEquals(expected, employees);
     }
 

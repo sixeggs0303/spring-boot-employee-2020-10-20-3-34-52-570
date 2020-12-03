@@ -8,6 +8,7 @@ public class Company {
     private Integer employeesNumber;
     private List<Employee> employees;
 
+    // no need to have employee list
     public Company(String companyName, Integer companyId, Integer employeesNumber, List<Employee> employees) {
         this.companyName = companyName;
         this.companyId = companyId;

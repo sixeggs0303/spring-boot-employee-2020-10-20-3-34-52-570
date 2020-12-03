@@ -13,6 +13,7 @@ public class CompanyService {
     @Autowired
     private CompanyRepository companyRepository;
 
+    // add employee Service
     public CompanyService(CompanyRepository companyRepository) {
         this.companyRepository = companyRepository;
     }

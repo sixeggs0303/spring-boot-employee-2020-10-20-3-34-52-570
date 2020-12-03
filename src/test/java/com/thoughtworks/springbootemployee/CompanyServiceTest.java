@@ -122,6 +122,7 @@ public class CompanyServiceTest {
                 .limit(2)
                 .collect(Collectors.toList());
 
+        // add page 2 to do testing
         //when
         final List<Company> companies = companyService.getCompaniesPaginized(1, 2);
 
