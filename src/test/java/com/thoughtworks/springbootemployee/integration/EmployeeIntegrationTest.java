@@ -31,7 +31,7 @@ public class EmployeeIntegrationTest {
         employeeRepository1.deleteAll();
     }
 
-    public static final String EMPLOYEES_URI = "/employees";
+    public static final String EMPLOYEES_URI = "/employees/";
 
     @Test
     void should_return_all_employees_when_get_all_given_employees() throws Exception {
@@ -65,7 +65,7 @@ public class EmployeeIntegrationTest {
         mockMvc.perform(post(EMPLOYEES_URI)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(employeeAsJson))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isString())
                 .andExpect(jsonPath("$.name").value("Theo"))
                 .andExpect(jsonPath("$.age").value(22))
@@ -92,7 +92,7 @@ public class EmployeeIntegrationTest {
 
         //when
         //then
-        mockMvc.perform(put(EMPLOYEES_URI)
+        mockMvc.perform(put(EMPLOYEES_URI+employee.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(employeeAsJson))
                 .andExpect(status().isOk())

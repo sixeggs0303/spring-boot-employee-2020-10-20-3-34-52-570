@@ -2,10 +2,7 @@ package com.thoughtworks.springbootemployee;
 
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
-import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository1;
-import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
-import com.thoughtworks.springbootemployee.repository.EmployeeRepository1;
 import com.thoughtworks.springbootemployee.service.CompanyService;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.junit.jupiter.api.Test;
