@@ -172,4 +172,16 @@ public class EmployeeIntegrationTest {
         List<Employee> employees = employeeRepository.findAll();
         assertEquals(0, employees.size());
     }
+
+    @Test
+    public void should_return_no_content_employee_when_delete_employee_given_employee_id() throws Exception {
+        //given
+        Employee employee = employeeMongoRepository.save(new Employee("Marcus", 22, "male", 50000));
+        //when
+        //then
+        mockMvc.perform(delete("/employees/" + employee.getId()))
+                .andExpect(status().isNoContent());
+
+        assertEquals(0, employeeMongoRepository.findAll().size());
+    }
 }
