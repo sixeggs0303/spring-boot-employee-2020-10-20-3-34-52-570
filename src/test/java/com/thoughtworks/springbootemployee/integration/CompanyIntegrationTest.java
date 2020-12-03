@@ -72,18 +72,36 @@ public class CompanyIntegrationTest {
     @Test
     void should_return_an_employee_list_when_get_employee_list_given_company_id() throws Exception {
         //given
-        employeeRepository.save(new Employee("Theo", 18, "male", 50000));
-        employeeRepository.save(new Employee("Linne", 18, "female", 50000));
+        Employee employee1 = employeeRepository.save(new Employee("Theo", 18, "male", 50000));
+        Employee employee2 = employeeRepository.save(new Employee("Linne", 18, "female", 50000));
         List<String> employeeIdList = new ArrayList<>();
-        employeeIdList.add("5fc8bb88a807b8276b16bbde");
-        employeeIdList.add("5fc8bb91a807b8276b16bbdf");
+        employeeIdList.add(employee1.getId());
+        employeeIdList.add(employee2.getId());
         Company company = companyRepository.save(new Company("Facebook", employeeIdList));
 
         //when
         //then
         mockMvc.perform(get(COMPANIES_URI+company.getCompanyId()+"/employees"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.*", hasSize(2)));
+                .andExpect(jsonPath("$.*", hasSize(2)))
+                .andExpect(jsonPath("$[0].id").value(employee1.getId()))
+                .andExpect(jsonPath("$[1].id").value(employee2.getId()));
+    }
+
+    @Test
+    void should_return_correct_page_when_get_all_given_companies_and_page_and_page_size() throws Exception {
+        //given
+        companyRepository.save(new Company("Facebook", new ArrayList<>()));
+        companyRepository.save(new Company("Google", new ArrayList<>()));
+
+        //when
+        //then
+        mockMvc.perform(get(COMPANIES_URI).param("page", "1").param("pageSize", "1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.*", hasSize(1)))
+                .andExpect(jsonPath("$[0].companyName").value("Facebook"))
+                .andExpect(jsonPath("$[0].employeesNumber").value(0))
+                .andExpect(jsonPath("$[0].employees").value(new ArrayList<>()));
     }
 
     @Test
