@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class CompanyController {
     private final List<Company> companies = new ArrayList<>();
     @Autowired
-    CompanyService companyService;
+    private CompanyService companyService;
     @Autowired
     private EmployeeService employeeService;
 

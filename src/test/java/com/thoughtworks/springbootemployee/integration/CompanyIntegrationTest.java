@@ -34,8 +34,13 @@ public class CompanyIntegrationTest {
     private EmployeeRepository employeeRepository;
 
     @AfterEach
-    void tearDown() {
+    void tearDownCompany() {
         companyRepository.deleteAll();
+    }
+
+    @AfterEach
+    void tearDownEmployee() {
+        employeeRepository.deleteAll();
     }
 
     public static final String COMPANIES_URI = "/companies/";
