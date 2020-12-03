@@ -101,5 +101,10 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$.age").value(22))
                 .andExpect(jsonPath("$.gender").value("male"))
                 .andExpect(jsonPath("$.salary").value(50000));
+
+        List<Employee> employees = employeeRepository1.findAll();
+        assertEquals(1, employees.size());
+        assertEquals("Theo", employees.get(0).getName());
+        assertEquals(22, employees.get(0).getAge());
     }
 }
