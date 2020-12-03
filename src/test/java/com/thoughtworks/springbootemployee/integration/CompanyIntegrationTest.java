@@ -52,6 +52,20 @@ public class CompanyIntegrationTest {
     }
 
     @Test
+    void should_return_a_company_when_get_company_by_id_given_company_id() throws Exception {
+        //given
+        Company company = companyRepository.save(new Company("Facebook", new ArrayList<>()));
+
+        //when
+        //then
+        mockMvc.perform(get(COMPANIES_URI+company.getCompanyId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.companyName").value("Facebook"))
+                .andExpect(jsonPath("$.employeesNumber").value(0))
+                .andExpect(jsonPath("$.employees").value(new ArrayList<>()));
+    }
+
+    @Test
     void should_return_company_when_create_given_company() throws Exception {
         //given
         String companyAsJson = "{\n" +
