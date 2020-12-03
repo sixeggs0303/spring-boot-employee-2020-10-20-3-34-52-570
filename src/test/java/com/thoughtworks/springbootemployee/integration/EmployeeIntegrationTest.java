@@ -48,6 +48,31 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$[0].age").value(18))
                 .andExpect(jsonPath("$[0].gender").value("male"))
                 .andExpect(jsonPath("$[0].salary").value(50000));
+
+        List<Employee> employees = employeeRepository1.findAll();
+        assertEquals(1, employees.size());
+        assertEquals("Theo", employees.get(0).getName());
+        assertEquals(18, employees.get(0).getAge());
+    }
+
+    @Test
+    void should_return_one_employee_when_get_employee_given_employee_id() throws Exception {
+        //given
+        Employee employee = employeeRepository1.save(new Employee("Theo", 18, "male", 50000));
+
+        //when
+        //then
+        mockMvc.perform(get(EMPLOYEES_URI+employee.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").isString())
+                .andExpect(jsonPath("$.name").value("Theo"))
+                .andExpect(jsonPath("$.age").value(18))
+                .andExpect(jsonPath("$.gender").value("male"))
+                .andExpect(jsonPath("$.salary").value(50000));
+        List<Employee> employees = employeeRepository1.findAll();
+        assertEquals(1, employees.size());
+        assertEquals("Theo", employees.get(0).getName());
+        assertEquals(18, employees.get(0).getAge());
     }
 
     @Test
