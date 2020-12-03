@@ -11,8 +11,6 @@ public class Company {
     @MongoId(FieldType.OBJECT_ID)
     private String companyId;
     private String companyName;
-    private Integer employeesNumber;
-    private List<Employee> employees;
     private List<String> employeesId;
 
     // no need to have employee list
@@ -28,16 +26,8 @@ public class Company {
     public Company() {
     }
 
-    public Integer getEmployeesNumber() {
-        return employeesNumber;
-    }
-
     public String getCompanyName() {
         return companyName;
-    }
-
-    public List<Employee> getEmployees() {
-        return employees;
     }
 
     public void setCompanyId(String companyId) {
