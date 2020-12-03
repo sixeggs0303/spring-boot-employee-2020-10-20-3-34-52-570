@@ -54,6 +54,7 @@ public class CompanyController {
     }
 
     @DeleteMapping("/{companyId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCompany(@PathVariable String companyId) {
         companyService.deleteCompany(companyId);
     }

@@ -81,8 +81,7 @@ public class EmployeeIntegrationTest {
     @Test
     void should_return_updated_employee_when_update_given_employee() throws Exception {
         //given
-        Employee employee = new Employee("Theo", 18, "male", 50000);
-        employeeRepository1.save(employee);
+        Employee employee = employeeRepository1.save(new Employee("Theo", 18, "male", 50000));
         String employeeAsJson = "{\n" +
                 "    \"name\": \"Theo\",\n" +
                 "    \"age\": 22,\n" +
@@ -106,5 +105,18 @@ public class EmployeeIntegrationTest {
         assertEquals(1, employees.size());
         assertEquals("Theo", employees.get(0).getName());
         assertEquals(22, employees.get(0).getAge());
+    }
+
+    @Test
+    void should_return_no_content_when_delete_given_only_one_employee() throws Exception {
+        //given
+        Employee employee = employeeRepository1.save(new Employee("Theo", 18, "male", 50000));
+        //when
+        //then
+        mockMvc.perform(delete(EMPLOYEES_URI+employee.getId()))
+                .andExpect(status().isNoContent());
+
+        List<Employee> employees = employeeRepository1.findAll();
+        assertEquals(0, employees.size());
     }
 }
