@@ -184,4 +184,24 @@ public class EmployeeIntegrationTest {
 
         assertEquals(0, employeeMongoRepository.findAll().size());
     }
+
+
+    @Test
+    public void should_return_page_of_employee_when_get_employees_given_page_and_page_size() throws Exception {
+        //given
+        employeeMongoRepository.save(new Employee("Marcus", 22, "male", 50000));
+        employeeMongoRepository.save(new Employee("Kelly", 22, "female", 50000));
+
+        //when
+        //then
+        mockMvc.perform(get("/employees")
+                .param("page", "1").param("pageSize", "1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.*", hasSize(1)))
+                .andExpect(jsonPath("$[0].id").isString())
+                .andExpect(jsonPath("$[0].name").value("Marcus"))
+                .andExpect(jsonPath("$[0].age").value(22))
+                .andExpect(jsonPath("$[0].gender").value("male"))
+                .andExpect(jsonPath("$[0].salary").value(50000));
+    }
 }
