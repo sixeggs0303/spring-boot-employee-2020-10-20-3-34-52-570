@@ -109,4 +109,18 @@ public class CompanyIntegrationTest {
         assertEquals("OOCL", companies.get(0).getCompanyName());
         assertEquals(employeeIdList, companies.get(0).getEmployeesId());
     }
+
+    @Test
+    void should_return_no_content_when_delete_given_company_id() throws Exception {
+        //given
+        Company company = companyRepository.save(new Company("Facebook", new ArrayList<>()));
+
+        //when
+        //then
+        mockMvc.perform(delete(COMPANIES_URI+company.getCompanyId()))
+                .andExpect(status().isNoContent());
+
+        List<Company> companies = companyRepository.findAll();
+        assertEquals(0, companies.size());
+    }
 }
