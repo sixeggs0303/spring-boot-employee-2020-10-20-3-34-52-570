@@ -1,7 +1,7 @@
 package com.thoughtworks.springbootemployee;
 
 import com.thoughtworks.springbootemployee.model.Employee;
-import com.thoughtworks.springbootemployee.repository.EmployeeRepository1;
+import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,18 +25,9 @@ public class EmployeeServiceTest {
     EmployeeService employeeService;
 
     @Mock
-    EmployeeRepository1 employeeRepository1;
+    EmployeeRepository employeeRepository;
 
-    private final String employee1 = "Marcus";
-    private final String employee2 = "Theo";
-    private final String employee3 = "Linne";
-    private final Integer age = 22;
-    private final String male = "male";
-    private final String female = "female";
     private final String employeeId1 = "1";
-    private final String employeeId2 = "2";
-    private final String employeeId3 = "3";
-    private final Integer salary = 10000;
 
     @Test
     void should_return_all_employees_when_get_all_given_all_employees() {
@@ -44,7 +35,7 @@ public class EmployeeServiceTest {
         final List<Employee> expected = new ArrayList<>();
         expected.add(new Employee());
         expected.add(new Employee());
-        when(employeeRepository1.findAll()).thenReturn(expected);
+        when(employeeRepository.findAll()).thenReturn(expected);
 
         //when
         final List<Employee> actual = employeeService.getEmployees();
@@ -57,7 +48,7 @@ public class EmployeeServiceTest {
     void should_return_an_employee_when_get_employee_given_an_employee() {
         //given
         Employee expected = new Employee();
-        when(employeeRepository1.findById(employeeId1)).thenReturn(Optional.of(expected));
+        when(employeeRepository.findById(employeeId1)).thenReturn(Optional.of(expected));
 
         //when
         final Employee actual = employeeService.getEmployee(employeeId1);
@@ -73,7 +64,7 @@ public class EmployeeServiceTest {
         fullList.add(new Employee());
         fullList.add(new Employee());
 
-        when(employeeRepository1.findAllByGender(any())).thenReturn(fullList);
+        when(employeeRepository.findAllByGender(any())).thenReturn(fullList);
 
         //when
         final List<Employee> actual = employeeService.getEmployeesByGender("male");
@@ -92,7 +83,7 @@ public class EmployeeServiceTest {
 
         final Page<Employee> expected = new PageImpl<>(fullList);
 
-        when(employeeRepository1.findAll((Pageable) any())).thenReturn(expected);
+        when(employeeRepository.findAll((Pageable) any())).thenReturn(expected);
         //when
         final List<Employee> actual = employeeService.getEmployeesPaginized(1, 3);
 
@@ -104,7 +95,7 @@ public class EmployeeServiceTest {
     void should_return_created_employee_when_create_employee_given_an_employee() {
         //given
         Employee expected = new Employee();
-        when(employeeRepository1.save(any())).thenReturn(expected);
+        when(employeeRepository.save(any())).thenReturn(expected);
 
         //when
         final Employee actual = employeeService.createEmployee(expected);
@@ -117,8 +108,8 @@ public class EmployeeServiceTest {
     void should_return_updated_employee_when_update_employee_given_an_employee_id_and_employee() {
         //given
         Employee expected = new Employee();
-        when(employeeRepository1.findById(any())).thenReturn(Optional.of(expected));
-        when(employeeRepository1.save(any())).thenReturn(expected);
+        when(employeeRepository.findById(any())).thenReturn(Optional.of(expected));
+        when(employeeRepository.save(any())).thenReturn(expected);
 
         //when
         Employee actual = employeeService.updateEmployee(employeeId1, expected);
@@ -135,6 +126,6 @@ public class EmployeeServiceTest {
         employeeService.deleteEmployee(employeeId1);
 
         //then
-        verify(employeeRepository1, times(1)).deleteById(employeeId1);
+        verify(employeeRepository, times(1)).deleteById(employeeId1);
     }
 }

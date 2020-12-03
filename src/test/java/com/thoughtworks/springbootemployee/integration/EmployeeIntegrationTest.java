@@ -1,7 +1,7 @@
 package com.thoughtworks.springbootemployee.integration;
 
 import com.thoughtworks.springbootemployee.model.Employee;
-import com.thoughtworks.springbootemployee.repository.EmployeeRepository1;
+import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +24,11 @@ public class EmployeeIntegrationTest {
     MockMvc mockMvc;
 
     @Autowired
-    private EmployeeRepository1 employeeRepository1;
+    private EmployeeRepository employeeRepository;
 
     @AfterEach
     void tearDown() {
-        employeeRepository1.deleteAll();
+        employeeRepository.deleteAll();
     }
 
     public static final String EMPLOYEES_URI = "/employees/";
@@ -37,7 +37,7 @@ public class EmployeeIntegrationTest {
     void should_return_all_employees_when_get_all_given_employees() throws Exception {
         //given
        Employee employee = new Employee("Theo", 18, "male", 50000);
-       employeeRepository1.save(employee);
+       employeeRepository.save(employee);
 
         //when
         //then
@@ -53,7 +53,7 @@ public class EmployeeIntegrationTest {
     @Test
     void should_return_one_employee_when_get_employee_given_employee_id() throws Exception {
         //given
-        Employee employee = employeeRepository1.save(new Employee("Theo", 18, "male", 50000));
+        Employee employee = employeeRepository.save(new Employee("Theo", 18, "male", 50000));
 
         //when
         //then
@@ -69,8 +69,8 @@ public class EmployeeIntegrationTest {
     @Test
     void should_return_male_employees_when_get_employee_by_gender_given_gender_is_male() throws Exception {
         //given
-        employeeRepository1.save(new Employee("Theo", 18, "male", 50000));
-        employeeRepository1.save(new Employee("Linne", 18, "female", 50000));
+        employeeRepository.save(new Employee("Theo", 18, "male", 50000));
+        employeeRepository.save(new Employee("Linne", 18, "female", 50000));
 
         //when
         //then
@@ -87,8 +87,8 @@ public class EmployeeIntegrationTest {
     @Test
     void should_return_correct_page_when_get_employee_given_employees_and_page_and_page_size() throws Exception {
         //given
-        employeeRepository1.save(new Employee("Theo", 18, "male", 50000));
-        employeeRepository1.save(new Employee("Linne", 18, "female", 50000));
+        employeeRepository.save(new Employee("Theo", 18, "male", 50000));
+        employeeRepository.save(new Employee("Linne", 18, "female", 50000));
 
         //when
         //then
@@ -124,7 +124,7 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$.gender").value("male"))
                 .andExpect(jsonPath("$.salary").value(50000));
 
-        List<Employee> employees = employeeRepository1.findAll();
+        List<Employee> employees = employeeRepository.findAll();
         assertEquals(1, employees.size());
         assertEquals("Theo", employees.get(0).getName());
         assertEquals(22, employees.get(0).getAge());
@@ -133,7 +133,7 @@ public class EmployeeIntegrationTest {
     @Test
     void should_return_updated_employee_when_update_given_employee() throws Exception {
         //given
-        Employee employee = employeeRepository1.save(new Employee("Theo", 18, "male", 50000));
+        Employee employee = employeeRepository.save(new Employee("Theo", 18, "male", 50000));
         String employeeAsJson = "{\n" +
                 "    \"name\": \"Theo\",\n" +
                 "    \"age\": 22,\n" +
@@ -153,7 +153,7 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$.gender").value("male"))
                 .andExpect(jsonPath("$.salary").value(50000));
 
-        List<Employee> employees = employeeRepository1.findAll();
+        List<Employee> employees = employeeRepository.findAll();
         assertEquals(1, employees.size());
         assertEquals("Theo", employees.get(0).getName());
         assertEquals(22, employees.get(0).getAge());
@@ -162,13 +162,13 @@ public class EmployeeIntegrationTest {
     @Test
     void should_return_no_content_when_delete_given_only_one_employee() throws Exception {
         //given
-        Employee employee = employeeRepository1.save(new Employee("Theo", 18, "male", 50000));
+        Employee employee = employeeRepository.save(new Employee("Theo", 18, "male", 50000));
         //when
         //then
         mockMvc.perform(delete(EMPLOYEES_URI+employee.getId()))
                 .andExpect(status().isNoContent());
 
-        List<Employee> employees = employeeRepository1.findAll();
+        List<Employee> employees = employeeRepository.findAll();
         assertEquals(0, employees.size());
     }
 }

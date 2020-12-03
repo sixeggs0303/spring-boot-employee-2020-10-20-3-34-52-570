@@ -2,7 +2,7 @@ package com.thoughtworks.springbootemployee;
 
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
-import com.thoughtworks.springbootemployee.repository.CompanyRepository1;
+import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.service.CompanyService;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.junit.jupiter.api.Test;
@@ -28,17 +28,13 @@ public class CompanyServiceTest {
     CompanyService companyService;
 
     @Mock
-    CompanyRepository1 companyRepository1;
+    CompanyRepository companyRepository;
 
     @Mock
     EmployeeService employeeService;
 
     private final String companyId1 = "1";
-    private final String companyId2 = "2";
-    private final String companyId3 = "3";
     private final String companyName1 = "Google";
-    private final String companyName2 = "Facebook";
-    private final String companyName3 = "Apple";
 
     @Test
     void should_return_all_companies_when_get_all_given_all_companies() {
@@ -46,7 +42,7 @@ public class CompanyServiceTest {
         final List<Company> expected = new ArrayList<>();
         expected.add(new Company());
         expected.add(new Company());
-        when(companyRepository1.findAll()).thenReturn(expected);
+        when(companyRepository.findAll()).thenReturn(expected);
 
         //when
         final List<Company> companies = companyService.getCompanies();
@@ -59,7 +55,7 @@ public class CompanyServiceTest {
     void should_return_a_company_when_get_company_given_a_company() {
         //given
         final Company expected = new Company();
-        when(companyRepository1.findById(any())).thenReturn(Optional.of(expected));
+        when(companyRepository.findById(any())).thenReturn(Optional.of(expected));
 
         //when
         final Company company = companyService.getCompany(companyId1);
@@ -71,9 +67,8 @@ public class CompanyServiceTest {
     @Test
     void should_return_employee_list_when_get_a_company_employee_list_given_a_company() {
         //given
-        final List<Company> companyList = new ArrayList<>();
         final Company expected = new Company(companyName1, new ArrayList<>());
-        when(companyRepository1.findById(any())).thenReturn(Optional.of(expected));
+        when(companyRepository.findById(any())).thenReturn(Optional.of(expected));
 
         //when
         final List<Employee> employeesList = companyService.getEmployeeList("1");
@@ -92,7 +87,7 @@ public class CompanyServiceTest {
 
         final Page<Company> expected = new PageImpl<>(fullList);
 
-        when(companyRepository1.findAll((Pageable) any())).thenReturn(expected);
+        when(companyRepository.findAll((Pageable) any())).thenReturn(expected);
         //when
         final List<Company> actual = companyService.getCompaniesPaginized(1, 2);
 
@@ -104,7 +99,7 @@ public class CompanyServiceTest {
     void should_return_a_company_when_create_given_a_company() {
         //given
         final Company expected = new Company();
-        when(companyRepository1.save(any())).thenReturn(expected);
+        when(companyRepository.save(any())).thenReturn(expected);
 
         //when
         final Company actual = companyService.createCompany(expected);
@@ -116,10 +111,9 @@ public class CompanyServiceTest {
     @Test
     void should_return_updated_company_when_update_given_a_company_id_and_company_updates() {
         //given
-        final Company beforeUpdateCompany = new Company();
         final Company expected = new Company();
-        when(companyRepository1.findById(any())).thenReturn(Optional.of(expected));
-        when(companyRepository1.save(any())).thenReturn(expected);
+        when(companyRepository.findById(any())).thenReturn(Optional.of(expected));
+        when(companyRepository.save(any())).thenReturn(expected);
 
         //when
         Company actual = companyService.updateCompany(companyId1, expected);
@@ -136,6 +130,6 @@ public class CompanyServiceTest {
         companyService.deleteCompany(companyId1);
 
         //then
-        verify(companyRepository1, times(1)).deleteById(companyId1);
+        verify(companyRepository, times(1)).deleteById(companyId1);
     }
 }

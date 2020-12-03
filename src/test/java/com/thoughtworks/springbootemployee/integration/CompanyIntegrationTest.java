@@ -2,8 +2,8 @@ package com.thoughtworks.springbootemployee.integration;
 
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
-import com.thoughtworks.springbootemployee.repository.CompanyRepository1;
-import com.thoughtworks.springbootemployee.repository.EmployeeRepository1;
+import com.thoughtworks.springbootemployee.repository.CompanyRepository;
+import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +28,10 @@ public class CompanyIntegrationTest {
     MockMvc mockMvc;
 
     @Autowired
-    private CompanyRepository1 companyRepository;
+    private CompanyRepository companyRepository;
 
     @Autowired
-    private EmployeeRepository1 employeeRepository;
+    private EmployeeRepository employeeRepository;
 
     @AfterEach
     void tearDown() {
