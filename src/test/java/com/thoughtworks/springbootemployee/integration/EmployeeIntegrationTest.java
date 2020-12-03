@@ -85,6 +85,24 @@ public class EmployeeIntegrationTest {
     }
 
     @Test
+    void should_return_correct_page_when_get_employee_given_employees_and_page_and_page_size() throws Exception {
+        //given
+        employeeRepository1.save(new Employee("Theo", 18, "male", 50000));
+        employeeRepository1.save(new Employee("Linne", 18, "female", 50000));
+
+        //when
+        //then
+        mockMvc.perform(get(EMPLOYEES_URI).param("page", "1").param("pageSize", "1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.*", hasSize(1)))
+                .andExpect(jsonPath("$[0].id").isString())
+                .andExpect(jsonPath("$[0].name").value("Theo"))
+                .andExpect(jsonPath("$[0].age").value(18))
+                .andExpect(jsonPath("$[0].gender").value("male"))
+                .andExpect(jsonPath("$[0].salary").value(50000));
+    }
+
+    @Test
     void should_return_employee_when_create_given_employee() throws Exception {
         //given
         String employeeAsJson = "{\n" +
