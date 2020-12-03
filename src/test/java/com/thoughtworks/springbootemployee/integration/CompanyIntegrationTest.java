@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -72,5 +73,40 @@ public class CompanyIntegrationTest {
                 .andExpect(jsonPath("$.companyId").isString())
                 .andExpect(jsonPath("$.companyName").value("OOCL"))
                 .andExpect(jsonPath("$.employeesId").value(employeeIdList));
+
+        List<Company> companies = companyRepository.findAll();
+        assertEquals(1, companies.size());
+        assertEquals("OOCL", companies.get(0).getCompanyName());
+        assertEquals(employeeIdList, companies.get(0).getEmployeesId());
+    }
+
+    @Test
+    void should_return_updated_company_when_update_given_company_id() throws Exception {
+        //given
+        List<String> employeeIdList = new ArrayList<>();
+        employeeIdList.add("5fc8bb88a807b8276b16bbde");
+        employeeIdList.add("5fc8bb91a807b8276b16bbdf");
+        employeeIdList.add("5fc8bb9aa807b8276b16bbe0");
+        Company company = companyRepository.save(new Company("Facebook", employeeIdList));
+        String companyAsJson = "{\n" +
+                "    \"companyName\": \"OOCL\",\n" +
+                "    \"employeesId\": [\"5fc8bb88a807b8276b16bbde\", \"5fc8bb91a807b8276b16bbdf\"]\n" +
+                "}";
+        employeeIdList.remove("5fc8bb9aa807b8276b16bbe0");
+
+        //when
+        //then
+        mockMvc.perform(put(COMPANIES_URI+company.getCompanyId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(companyAsJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.companyId").isString())
+                .andExpect(jsonPath("$.companyName").value("OOCL"))
+                .andExpect(jsonPath("$.employeesId").value(employeeIdList));
+
+        List<Company> companies = companyRepository.findAll();
+        assertEquals(1, companies.size());
+        assertEquals("OOCL", companies.get(0).getCompanyName());
+        assertEquals(employeeIdList, companies.get(0).getEmployeesId());
     }
 }

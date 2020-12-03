@@ -13,7 +13,6 @@ public class Company {
     private String companyName;
     private List<String> employeesId;
 
-    // no need to have employee list
     public Company(String companyName, List<String> employeesId) {
         this.companyName = companyName;
         this.employeesId = employeesId;
@@ -35,6 +34,6 @@ public class Company {
     }
 
     public List<String> getEmployeesId() {
-        return employeesId;
+        return this.employeesId;
     }
 }
