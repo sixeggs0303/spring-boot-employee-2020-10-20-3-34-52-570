@@ -7,8 +7,9 @@ import com.thoughtworks.springbootemployee.service.CompanyService;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -73,12 +74,12 @@ public class CompanyServiceTest {
         //given
         CompanyRepository companyRepository = new CompanyRepository();
         CompanyService companyService = new CompanyService(companyRepository);
-        List<Company> expected = new ArrayList<>();
-        expected.add(new Company(1, "Google", 0, new ArrayList<>()));
-        expected.add(new Company(2, "Facebook", 0, new ArrayList<>()));
-        expected.add(new Company(3, "Apple", 0, new ArrayList<>()));
+        Company google = new Company(1, "Google", 0, new ArrayList<>());
+        Company facebook = new Company(2, "Facebook", 0, new ArrayList<>());
+        Company apple = new Company(3, "Apple", 0, new ArrayList<>());
+        List<Company> expected = Arrays.asList(google, facebook, apple);
         expected.forEach(companyRepository::create);
-        expected = expected.stream().skip(2).collect(Collectors.toList());
+        expected = Collections.singletonList(apple);
 
         //when
         final List<Company> companies = companyService.getCompaniesPaginated(2, 2);
@@ -107,9 +108,9 @@ public class CompanyServiceTest {
         //given
         CompanyRepository companyRepository = new CompanyRepository();
         CompanyService companyService = new CompanyService(companyRepository);
-        Company expected = new Company(1, "Google", 0, new ArrayList<>());
-        companyService.createCompany(expected);
-        expected.setCompanyName("Alphabet");
+        Company original = new Company(1, "Google", 0, new ArrayList<>());
+        companyService.createCompany(original);
+        Company expected = new Company(1, "Apple", 0, new ArrayList<>());
         Integer companyId = expected.getCompanyId();
 
         //when
