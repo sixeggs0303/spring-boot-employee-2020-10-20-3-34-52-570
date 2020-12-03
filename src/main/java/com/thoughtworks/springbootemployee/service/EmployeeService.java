@@ -25,7 +25,7 @@ public class EmployeeService {
     }
 
     public List<Employee> getEmployeesPaginized(Integer page, Integer pageSize) {
-        return employeeRepository1.findAll(PageRequest.of(page, pageSize)).toList();
+        return employeeRepository1.findAll(PageRequest.of(page-1, pageSize)).toList();
     }
 
     public Employee getEmployee(String employeeId) {
@@ -42,6 +42,7 @@ public class EmployeeService {
 
     public Employee updateEmployee(String employeeId, Employee employee) {
         if(getEmployee(employeeId)!=null){
+            employee.setId(employeeId);
             return employeeRepository1.save(employee);
         }
         return null;

@@ -42,21 +42,21 @@ public class EmployeeServiceTest {
     void should_return_all_employees_when_get_all_given_all_employees() {
         //given
         final List<Employee> expected = new ArrayList<>();
-        expected.add(new Employee(employeeId1, employee1, age, male, salary));
-        expected.add(new Employee(employeeId2, employee2, age, male, salary));
+        expected.add(new Employee());
+        expected.add(new Employee());
         when(employeeRepository1.findAll()).thenReturn(expected);
 
         //when
-        final List<Employee> employees = employeeService.getEmployees();
+        final List<Employee> actual = employeeService.getEmployees();
 
         //then
-        assertEquals(expected, employees);
+        assertEquals(expected, actual);
     }
 
     @Test
     void should_return_an_employee_when_get_employee_given_an_employee() {
         //given
-        Employee expected = new Employee(employeeId1, employee1, age, male, salary);
+        Employee expected = new Employee();
         when(employeeRepository1.findById(employeeId1)).thenReturn(Optional.of(expected));
 
         //when
@@ -70,63 +70,61 @@ public class EmployeeServiceTest {
     void should_return_only_male_employee_when_get_employee_given_gender_is_male() {
         //given
         final List<Employee> fullList = new ArrayList<>();
-        fullList.add(new Employee(employeeId1, employee1, age, male, salary));
-        fullList.add(new Employee(employeeId2, employee2, age, male, salary));
+        fullList.add(new Employee());
+        fullList.add(new Employee());
 
         when(employeeRepository1.findAllByGender(any())).thenReturn(fullList);
 
         //when
-        final List<Employee> employees = employeeService.getEmployeesByGender("male");
+        final List<Employee> actual = employeeService.getEmployeesByGender("male");
 
         //then
-
-        assertEquals(fullList, employees);
+        assertEquals(fullList, actual);
     }
 
     @Test
     void should_return_correct_page_when_get_employee_given_page_and_page_size() {
         //given
         final List<Employee> fullList = new ArrayList<>();
-        fullList.add(new Employee(employeeId1, employee1, age, male, salary));
-        fullList.add(new Employee(employeeId2, employee2, age, male, salary));
-        fullList.add(new Employee(employeeId3, employee3, age, female, salary));
+        fullList.add(new Employee());
+        fullList.add(new Employee());
+        fullList.add(new Employee());
 
         final Page<Employee> expected = new PageImpl<>(fullList);
 
         when(employeeRepository1.findAll((Pageable) any())).thenReturn(expected);
         //when
-        final List<Employee> employees = employeeService.getEmployeesPaginized(1, 3);
+        final List<Employee> actual = employeeService.getEmployeesPaginized(1, 3);
 
         //then
-        assertEquals(expected.toList(), employees);
+        assertEquals(expected.toList(), actual);
     }
 
     @Test
     void should_return_created_employee_when_create_employee_given_an_employee() {
         //given
-        Employee expected = new Employee(employeeId1, employee1, age, male, salary);
+        Employee expected = new Employee();
         when(employeeRepository1.save(any())).thenReturn(expected);
 
         //when
-        final Employee employee = employeeService.createEmployee(expected);
+        final Employee actual = employeeService.createEmployee(expected);
 
         //then
-        assertEquals(expected, employee);
+        assertEquals(expected, actual);
     }
 
     @Test
     void should_return_updated_employee_when_update_employee_given_an_employee_id_and_employee() {
         //given
-        Employee beforeUpdateEmployee = new Employee(employeeId1, employee1, age, male, salary);
-        Employee expected = new Employee(employeeId1, employee2, age, male, salary);
+        Employee expected = new Employee();
         when(employeeRepository1.findById(any())).thenReturn(Optional.of(expected));
         when(employeeRepository1.save(any())).thenReturn(expected);
 
         //when
-        Employee employee = employeeService.updateEmployee(employeeId1, expected);
+        Employee actual = employeeService.updateEmployee(employeeId1, expected);
 
         //then
-        assertEquals(expected, employee);
+        assertEquals(expected, actual);
     }
 
     @Test

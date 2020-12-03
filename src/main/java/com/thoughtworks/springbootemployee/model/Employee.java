@@ -13,16 +13,14 @@ public class Employee {
     private String gender;
     private Integer salary;
 
-    // add company id to reference
-    public Employee(String id, String name, int age, String gender, int salary) {
-        this.id = id;
+    public Employee(){ }
+
+    public Employee(String name, int age, String gender, int salary) {
         this.name = name;
         this.age = age;
         this.gender = gender;
         this.salary = salary;
     }
-
-    public Employee(){ }
 
     public String getId() {
         return id;
@@ -42,5 +40,9 @@ public class Employee {
 
     public Integer getSalary() {
         return salary;
+    }
+
+    public void setId(String employeeId) {
+        this.id = employeeId;
     }
 }
