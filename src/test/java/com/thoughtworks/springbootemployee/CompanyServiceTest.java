@@ -2,137 +2,125 @@ package com.thoughtworks.springbootemployee;
 
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
-import com.thoughtworks.springbootemployee.repository.CompanyRepository;
+import com.thoughtworks.springbootemployee.repository.CompanyMongoRepository;
 import com.thoughtworks.springbootemployee.service.CompanyService;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class CompanyServiceTest {
+    @InjectMocks
+    CompanyService companyService;
+
+    @Mock
+    CompanyMongoRepository companyMongoRepository;
+
     @Test
     public void should_return_all_companies_when_get_all_given_all_companies() {
         //given
-        List<Employee> employeeList = new ArrayList<>();
-        employeeList.add(new Employee(1, "Marcus", 22, "male", 10000));
-        employeeList.add(new Employee(2, "Theo", 22, "male", 10));
-
-        CompanyRepository companyRepository = new CompanyRepository();
-        CompanyService companyService = new CompanyService(companyRepository);
-
-        List<Company> expected = new ArrayList<>();
-        expected.add(new Company(1, "Google", employeeList.size(), employeeList));
-        expected.add(new Company(2, "Facebook", employeeList.size(), employeeList));
-        expected.forEach(companyRepository::create);
+        final List<Company> expected = new ArrayList<>();
+        expected.add(new Company());
+        expected.add(new Company());
+        when(companyMongoRepository.findAll()).thenReturn(expected);
 
         //when
-        List<Company> companies = companyService.getCompanies();
+        final List<Company> actual = companyService.getCompanies();
 
         //then
-        assertEquals(expected, companies);
+        assertEquals(expected, actual);
     }
 
     @Test
     public void should_return_a_company_when_get_company_given_a_company() {
         //given
-        CompanyRepository companyRepository = new CompanyRepository();
-        CompanyService companyService = new CompanyService(companyRepository);
-
-        Company expected = new Company(1, "Facebook", 0, new ArrayList<>());
-        companyRepository.create(expected);
+        Company expected = new Company();
+        when(companyMongoRepository.findById(any())).thenReturn(Optional.of(expected));
 
         //when
-        Company company = companyService.getCompany(1);
+        final Company actual = companyService.getCompany(expected.getCompanyId());
 
         //then
-        assertEquals(expected, company);
+        assertEquals(expected, actual);
     }
 
     @Test
     public void should_return_list_of_employee_when_get_employees_of_company_given_a_company() {
         //given
-        CompanyRepository companyRepository = new CompanyRepository();
-        CompanyService companyService = new CompanyService(companyRepository);
-
-        Company expected = new Company(1, "Facebook", 0, new ArrayList<>());
-        companyRepository.create(expected);
+        List<Employee> expected = new ArrayList<>();
+        Company company = new Company("1", "Google", expected.size(), expected);
+        when(companyMongoRepository.findById(any())).thenReturn(Optional.of(company));
 
         //when
-        List<Employee> employees = companyService.getEmployeesOfCompany(1);
+        final List<Employee> actual = companyService.getEmployeesOfCompany(company.getCompanyId());
 
         //then
-        assertEquals(expected.getEmployees(), employees);
+        assertEquals(expected, actual);
     }
 
     @Test
     public void should_return_first_page_of_companies_when_get_company_paginated_given_page_and_page_size() {
         //given
-        CompanyRepository companyRepository = new CompanyRepository();
-        CompanyService companyService = new CompanyService(companyRepository);
-        Company google = new Company(1, "Google", 0, new ArrayList<>());
-        Company facebook = new Company(2, "Facebook", 0, new ArrayList<>());
-        Company apple = new Company(3, "Apple", 0, new ArrayList<>());
-        List<Company> expected = Arrays.asList(google, facebook, apple);
-        expected.forEach(companyRepository::create);
-        expected = Collections.singletonList(apple);
+        Company company1 = new Company();
+        Company company2 = new Company();
+        Page<Company> expected = new PageImpl<>(Arrays.asList(company1, company2));
+        when(companyMongoRepository.findAll((Pageable) any())).thenReturn(expected);
 
         //when
-        final List<Company> companies = companyService.getCompaniesPaginated(2, 2);
+        final List<Company> actual = companyService.getCompaniesPaginated(1, 2);
 
         //then
-        assertEquals(expected, companies);
+        assertEquals(expected.toList(), actual);
     }
 
     @Test
     void should_return_created_company_when_create_company_given_a_company() {
         //given
-        CompanyRepository companyRepository = new CompanyRepository();
-        CompanyService companyService = new CompanyService(companyRepository);
-        Company expected = new Company(1, "Google", 0, new ArrayList<>());
-        Integer companyId = expected.getCompanyId();
+        Company expected = new Company();
+        when(companyMongoRepository.save(any())).thenReturn(expected);
 
         //when
-        companyService.createCompany(expected);
+        Company actual = companyService.createCompany(expected);
 
         //then
-        assertEquals(expected, companyService.getCompany(companyId));
+        assertEquals(expected, actual);
     }
 
     @Test
     void should_return_updated_company_when_update_company_given_a_company_id_and_company() {
         //given
-        CompanyRepository companyRepository = new CompanyRepository();
-        CompanyService companyService = new CompanyService(companyRepository);
-        Company original = new Company(1, "Google", 0, new ArrayList<>());
-        companyService.createCompany(original);
-        Company expected = new Company(1, "Apple", 0, new ArrayList<>());
-        Integer companyId = expected.getCompanyId();
+        Company expected = new Company();
+        when(companyMongoRepository.findById(any())).thenReturn(Optional.of(expected));
+        when(companyMongoRepository.save(any())).thenReturn(expected);
+        String companyId = expected.getCompanyId();
 
         //when
-        companyService.updateCompany(companyId, expected);
+        Company actual = companyService.updateCompany(companyId, expected);
 
         //then
-        assertEquals(expected, companyService.getCompany(companyId));
+        assertEquals(expected, actual);
     }
 
     @Test
-    void should_return_null_when_delete_company_given_a_company_id() {
+    void should_call_repository_delete_when_delete_company_given_a_company_id() {
         //given
-        CompanyRepository companyRepository = new CompanyRepository();
-        CompanyService companyService = new CompanyService(companyRepository);
-        Company expected = new Company(1, "Google", 0, new ArrayList<>());
-        companyService.createCompany(expected);
-        Integer companyId = expected.getCompanyId();
+        String companyId = "1";
 
         //when
         companyService.deleteCompany(companyId);
 
         //then
-        assertNull(companyService.getCompany(companyId));
+        verify(companyMongoRepository, times(1)).deleteById(companyId);
     }
 }
