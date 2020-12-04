@@ -4,6 +4,7 @@ import com.thoughtworks.springbootemployee.exception.EmployeeNotFoundException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +25,8 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-    public List<Employee> getEmployeesPaginized(Integer page, Integer pageSize) {
-        return employeeRepository.findAll(PageRequest.of(page - 1, pageSize)).toList();
+    public Page<Employee> getEmployeesPaginated(Integer page, Integer pageSize) {
+        return employeeRepository.findAll(PageRequest.of(page - 1, pageSize));
     }
 
     public Employee getEmployee(String employeeId) throws EmployeeNotFoundException {

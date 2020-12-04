@@ -1,10 +1,9 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.CompanyNotFoundException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
-import com.thoughtworks.springbootemployee.service.CompanyService;
-import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -90,10 +89,10 @@ public class CompanyServiceTest {
 
         when(companyRepository.findAll((Pageable) any())).thenReturn(expected);
         //when
-        final List<Company> actual = companyService.getCompaniesPaginized(1, 2);
+        final Page<Company> actual = companyService.getCompaniesPaginated(1, 2);
 
         //then
-        assertEquals(expected.toList(), actual);
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -111,7 +110,7 @@ public class CompanyServiceTest {
 
     // use argument capture
     @Test
-    void should_return_updated_company_when_update_given_a_company_id_and_company_updates() {
+    void should_return_updated_company_when_update_given_a_company_id_and_company_updates() throws CompanyNotFoundException {
         //given
         final Company expected = new Company();
         when(companyRepository.existsById(any())).thenReturn(true);

@@ -1,10 +1,12 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.CompanyNotFoundException;
 import com.thoughtworks.springbootemployee.exception.EmployeeNotFoundException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -32,25 +34,25 @@ public class CompanyService {
         return companyRepository.save(company);
     }
 
-    public Company getCompany(String companyId) {
-        return companyRepository.findById(companyId).orElse(null);
+    public Company getCompany(String companyId) throws CompanyNotFoundException {
+        return companyRepository.findById(companyId).orElseThrow(CompanyNotFoundException::new);
     }
 
-    public List<Employee> getEmployeeList(String companyId) {
+    public List<Employee> getEmployeeList(String companyId) throws CompanyNotFoundException {
         return employeeService.getEmployeesById(getCompany(companyId).getEmployeesId());
     }
 
-    public List<Company> getCompaniesPaginized(int page, int pageSize) {
-        return companyRepository.findAll(PageRequest.of(page - 1, pageSize)).toList();
+    public Page<Company> getCompaniesPaginated(int page, int pageSize) {
+        return companyRepository.findAll(PageRequest.of(page - 1, pageSize));
     }
 
     //confirm employee id exist
-    public Company updateCompany(String companyId, Company companyUpdated) {
+    public Company updateCompany(String companyId, Company companyUpdated) throws CompanyNotFoundException {
         if (this.companyRepository.existsById(companyId)) {
             companyUpdated.setCompanyId(companyId);
             return companyRepository.save(companyUpdated);
         }
-        return null;
+        throw new CompanyNotFoundException();
     }
 
     public void deleteCompany(String companyId) {

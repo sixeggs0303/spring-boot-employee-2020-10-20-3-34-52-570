@@ -3,7 +3,6 @@ package com.thoughtworks.springbootemployee.service;
 import com.thoughtworks.springbootemployee.exception.EmployeeNotFoundException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
-import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -86,10 +85,10 @@ public class EmployeeServiceTest {
 
         when(employeeRepository.findAll((Pageable) any())).thenReturn(expected);
         //when
-        final List<Employee> actual = employeeService.getEmployeesPaginized(1, 3);
+        final Page<Employee> actual = employeeService.getEmployeesPaginated(1, 3);
 
         //then
-        assertEquals(expected.toList(), actual);
+        assertEquals(expected, actual);
     }
 
     @Test

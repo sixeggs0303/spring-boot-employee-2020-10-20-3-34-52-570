@@ -1,10 +1,12 @@
 package com.thoughtworks.springbootemployee.controller;
 
+import com.thoughtworks.springbootemployee.exception.CompanyNotFoundException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.response.CompanyResponse;
 import com.thoughtworks.springbootemployee.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,18 +27,18 @@ public class CompanyController {
     }
 
     @GetMapping("/{companyId}")
-    public CompanyResponse getCompany(@PathVariable String companyId) {
+    public CompanyResponse getCompany(@PathVariable String companyId) throws CompanyNotFoundException {
         return formatCompanyResponse(this.companyService.getCompany(companyId));
     }
 
     @GetMapping("/{companyId}/employees")
-    public List<Employee> getEmployees(@PathVariable String companyId) {
+    public List<Employee> getEmployees(@PathVariable String companyId) throws CompanyNotFoundException {
         return companyService.getEmployeeList(companyId);
     }
 
     @GetMapping(params = {"page", "pageSize"})
-    public List<CompanyResponse> getEmployeesInPage(@RequestParam Integer page, @RequestParam Integer pageSize) {
-        return formatListOfCompanyResponse(this.companyService.getCompaniesPaginized(page, pageSize));
+    public Page<CompanyResponse> getEmployeesInPage(@RequestParam Integer page, @RequestParam Integer pageSize) {
+        return formatListOfCompanyResponse(this.companyService.getCompaniesPaginated(page, pageSize));
     }
 
     @PostMapping
@@ -46,7 +48,7 @@ public class CompanyController {
     }
 
     @PutMapping("/{companyId}")
-    public Company updateCompany(@PathVariable String companyId, @RequestBody Company companyUpdated) {
+    public Company updateCompany(@PathVariable String companyId, @RequestBody Company companyUpdated) throws CompanyNotFoundException {
         return companyService.updateCompany(companyId, companyUpdated);
     }
 
@@ -56,15 +58,15 @@ public class CompanyController {
         companyService.deleteCompany(companyId);
     }
 
-    private CompanyResponse formatCompanyResponse(Company company) {
+    private CompanyResponse formatCompanyResponse(Company company) throws CompanyNotFoundException {
         if (company == null) {
-            return null;
+            throw new CompanyNotFoundException();
         }
         List<Employee> employees = this.companyService.getEmployeeList(company.getCompanyId());
         return new CompanyResponse(company.getCompanyName(), employees.size(), employees);
     }
 
-    private List<CompanyResponse> formatListOfCompanyResponse(List<Company> companies) {
+    private List<CompanyResponse> formatListOfCompanyResponse(List<Company> companies) throws CompanyNotFoundException{
         return companies.stream()
                 .map(this::formatCompanyResponse)
                 .collect(Collectors.toList());
