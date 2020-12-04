@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.EmployeeNotFoundException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
@@ -17,6 +18,8 @@ public class CompanyService {
     @Autowired
     private EmployeeService employeeService;
 
+
+    // change null to exception
     public CompanyService(CompanyRepository companyRepository, EmployeeService employeeService) {
         this.companyRepository = companyRepository;
         this.employeeService = employeeService;
@@ -26,6 +29,7 @@ public class CompanyService {
         return companyRepository.findAll();
     }
 
+    //confirm employee id exist
     public Company createCompany(Company company) {
         return companyRepository.save(company);
     }
@@ -34,18 +38,19 @@ public class CompanyService {
         return companyRepository.findById(companyId).orElse(null);
     }
 
-    public List<Employee> getEmployeeList(String companyId) {
+    public List<Employee> getEmployeeList(String companyId) throws EmployeeNotFoundException {
         return getCompany(companyId).getEmployeesId().stream()
-                .map(employeeService::getEmployee)
+                .map(this.employeeService::getEmployee)
                 .collect(Collectors.toList());
     }
 
     public List<Company> getCompaniesPaginized(int page, int pageSize) {
-        return companyRepository.findAll(PageRequest.of(page-1, pageSize)).toList();
+        return companyRepository.findAll(PageRequest.of(page - 1, pageSize)).toList();
     }
 
+    //confirm employee id exist
     public Company updateCompany(String companyId, Company companyUpdated) {
-        if(getCompany(companyId)!=null){
+        if (getCompany(companyId) != null) {
             companyUpdated.setCompanyId(companyId);
             return companyRepository.save(companyUpdated);
         }

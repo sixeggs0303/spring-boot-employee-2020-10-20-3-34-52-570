@@ -4,6 +4,7 @@ import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
+import org.hamcrest.collection.ArrayAsIterableMatcher;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ public class CompanyIntegrationTest {
     @Autowired
     private EmployeeRepository employeeRepository;
 
+    // put the 2 aftereach together
     @AfterEach
     void tearDownCompany() {
         companyRepository.deleteAll();
@@ -55,9 +57,10 @@ public class CompanyIntegrationTest {
         //then
         mockMvc.perform(get(COMPANIES_URI))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.*",hasSize(1)))
                 .andExpect(jsonPath("$[0].companyName").value("Facebook"))
                 .andExpect(jsonPath("$[0].employeesNumber").value(0))
-                .andExpect(jsonPath("$[0].employees").value(new ArrayList<>()));
+                .andExpect(jsonPath("$[0].employees").value(new ArrayList()));
     }
 
     @Test
@@ -67,7 +70,7 @@ public class CompanyIntegrationTest {
 
         //when
         //then
-        mockMvc.perform(get(COMPANIES_URI+company.getCompanyId()))
+        mockMvc.perform(get(COMPANIES_URI + company.getCompanyId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.companyName").value("Facebook"))
                 .andExpect(jsonPath("$.employeesNumber").value(0))
@@ -86,13 +89,14 @@ public class CompanyIntegrationTest {
 
         //when
         //then
-        mockMvc.perform(get(COMPANIES_URI+company.getCompanyId()+"/employees"))
+        mockMvc.perform(get(COMPANIES_URI + company.getCompanyId() + "/employees"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.*", hasSize(2)))
                 .andExpect(jsonPath("$[0].id").value(employee1.getId()))
                 .andExpect(jsonPath("$[1].id").value(employee2.getId()));
     }
 
+    // add 3 and 2 example
     @Test
     void should_return_correct_page_when_get_all_given_companies_and_page_and_page_size() throws Exception {
         //given
@@ -125,8 +129,8 @@ public class CompanyIntegrationTest {
         //when
         //then
         mockMvc.perform(post(COMPANIES_URI)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(companyAsJson))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(companyAsJson))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.companyId").isString())
                 .andExpect(jsonPath("$.companyName").value("OOCL"))
@@ -138,6 +142,7 @@ public class CompanyIntegrationTest {
         assertEquals(employeeIdList, companies.get(0).getEmployeesId());
     }
 
+    // add employees, use employees' id to input as employee list
     @Test
     void should_return_updated_company_when_update_given_company_id() throws Exception {
         //given
@@ -154,7 +159,7 @@ public class CompanyIntegrationTest {
 
         //when
         //then
-        mockMvc.perform(put(COMPANIES_URI+company.getCompanyId())
+        mockMvc.perform(put(COMPANIES_URI + company.getCompanyId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(companyAsJson))
                 .andExpect(status().isOk())
@@ -175,7 +180,7 @@ public class CompanyIntegrationTest {
 
         //when
         //then
-        mockMvc.perform(delete(COMPANIES_URI+company.getCompanyId()))
+        mockMvc.perform(delete(COMPANIES_URI + company.getCompanyId()))
                 .andExpect(status().isNoContent());
 
         List<Company> companies = companyRepository.findAll();

@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.EmployeeNotFoundException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,8 @@ public class EmployeeService {
         return employeeRepository.findAll(PageRequest.of(page-1, pageSize)).toList();
     }
 
-    public Employee getEmployee(String employeeId) {
-        return employeeRepository.findById(employeeId).orElse(null);
+    public Employee getEmployee(String employeeId) throws EmployeeNotFoundException {
+        return employeeRepository.findById(employeeId).orElseThrow(EmployeeNotFoundException::new);
     }
 
     public List<Employee> getEmployeesByGender(String gender) {
@@ -37,12 +38,12 @@ public class EmployeeService {
         return employeeRepository.save(employee);
     }
 
-    public Employee updateEmployee(String employeeId, Employee employee) {
+    public Employee updateEmployee(String employeeId, Employee employee) throws EmployeeNotFoundException {
         if(getEmployee(employeeId)!=null){
             employee.setId(employeeId);
             return employeeRepository.save(employee);
         }
-        return null;
+        throw new EmployeeNotFoundException();
     }
 
     public void deleteEmployee(String employeeId) {

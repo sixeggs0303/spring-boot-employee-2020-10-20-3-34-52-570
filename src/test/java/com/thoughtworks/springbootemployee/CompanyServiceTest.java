@@ -33,6 +33,7 @@ public class CompanyServiceTest {
     @Mock
     EmployeeService employeeService;
 
+    // can remove 1
     private final String companyId1 = "1";
     private final String companyName1 = "Google";
 
@@ -108,6 +109,7 @@ public class CompanyServiceTest {
         assertEquals(expected, actual);
     }
 
+    // use argument capture
     @Test
     void should_return_updated_company_when_update_given_a_company_id_and_company_updates() {
         //given

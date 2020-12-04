@@ -84,6 +84,7 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$[0].salary").value(50000));
     }
 
+    // use 3 and 2 as example
     @Test
     void should_return_correct_page_when_get_employee_given_employees_and_page_and_page_size() throws Exception {
         //given
