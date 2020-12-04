@@ -52,7 +52,7 @@ public class CompanyServiceTest {
     }
 
     @Test
-    void should_return_a_company_when_get_company_given_a_company() {
+    void should_return_a_company_when_get_company_given_a_company() throws CompanyNotFoundException {
         //given
         final Company expected = new Company();
         when(companyRepository.findById(any())).thenReturn(Optional.of(expected));
@@ -65,7 +65,7 @@ public class CompanyServiceTest {
     }
 
     @Test
-    void should_return_employee_list_when_get_a_company_employee_list_given_a_company() {
+    void should_return_employee_list_when_get_a_company_employee_list_given_a_company() throws CompanyNotFoundException {
         //given
         final Company expected = new Company(companyName1, new ArrayList<>());
         when(companyRepository.findById(any())).thenReturn(Optional.of(expected));

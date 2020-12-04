@@ -1,9 +1,12 @@
 package com.thoughtworks.springbootemployee.controller;
 
+import com.thoughtworks.springbootemployee.dto.EmployeeResponse;
 import com.thoughtworks.springbootemployee.exception.CompanyNotFoundException;
+import com.thoughtworks.springbootemployee.mapper.CompanyMapper;
+import com.thoughtworks.springbootemployee.mapper.EmployeeMapper;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
-import com.thoughtworks.springbootemployee.response.CompanyResponse;
+import com.thoughtworks.springbootemployee.dto.CompanyResponse;
 import com.thoughtworks.springbootemployee.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,25 +23,32 @@ public class CompanyController {
     private final List<Company> companies = new ArrayList<>();
     @Autowired
     private CompanyService companyService;
+    @Autowired
+    private CompanyMapper companyMapper;
+    @Autowired
+    private EmployeeMapper employeeMapper;
 
     @GetMapping
     public List<CompanyResponse> getCompanies() {
-        return formatListOfCompanyResponse(this.companyService.getCompanies());
+        List<Company> companies = this.companyService.getCompanies();
+        return companies.stream().map(companyMapper::toResponse).collect(Collectors.toList());
     }
 
     @GetMapping("/{companyId}")
     public CompanyResponse getCompany(@PathVariable String companyId) throws CompanyNotFoundException {
-        return formatCompanyResponse(this.companyService.getCompany(companyId));
+        return companyMapper.toResponse(this.companyService.getCompany(companyId));
     }
 
     @GetMapping("/{companyId}/employees")
-    public List<Employee> getEmployees(@PathVariable String companyId) throws CompanyNotFoundException {
-        return companyService.getEmployeeList(companyId);
+    public List<EmployeeResponse> getEmployees(@PathVariable String companyId) throws CompanyNotFoundException {
+        List<Employee> employeeList = companyService.getEmployeeList(companyId);
+        return employeeList.stream().map(employeeMapper::toResponse).collect(Collectors.toList());
     }
 
     @GetMapping(params = {"page", "pageSize"})
     public Page<CompanyResponse> getEmployeesInPage(@RequestParam Integer page, @RequestParam Integer pageSize) {
-        return formatListOfCompanyResponse(this.companyService.getCompaniesPaginated(page, pageSize));
+        Page<Company> companies = this.companyService.getCompaniesPaginated(page, pageSize);
+        return companies.map(companyMapper::toResponse);
     }
 
     @PostMapping
@@ -58,17 +68,17 @@ public class CompanyController {
         companyService.deleteCompany(companyId);
     }
 
-    private CompanyResponse formatCompanyResponse(Company company) throws CompanyNotFoundException {
-        if (company == null) {
-            throw new CompanyNotFoundException();
-        }
-        List<Employee> employees = this.companyService.getEmployeeList(company.getCompanyId());
-        return new CompanyResponse(company.getCompanyName(), employees.size(), employees);
-    }
-
-    private List<CompanyResponse> formatListOfCompanyResponse(List<Company> companies) throws CompanyNotFoundException{
-        return companies.stream()
-                .map(this::formatCompanyResponse)
-                .collect(Collectors.toList());
-    }
+//    private CompanyResponse formatCompanyResponse(Company company) throws CompanyNotFoundException {
+//        if (company == null) {
+//            throw new CompanyNotFoundException();
+//        }
+//        List<Employee> employees = this.companyService.getEmployeeList(company.getCompanyId());
+//        return new CompanyResponse(company.getCompanyName(), employees.size(), employees);
+//    }
+//
+//    private List<CompanyResponse> formatListOfCompanyResponse(List<Company> companies) throws CompanyNotFoundException{
+//        return companies.stream()
+//                .map(this::formatCompanyResponse)
+//                .collect(Collectors.toList());
+//    }
 }
