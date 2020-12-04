@@ -32,9 +32,8 @@ public class CompanyServiceTest {
     @Mock
     EmployeeService employeeService;
 
-    // can remove 1
-    private final String companyId1 = "1";
-    private final String companyName1 = "Google";
+    private final String companyId = "1";
+    private final String companyName = "Google";
 
     @Test
     void should_return_all_companies_when_get_all_given_all_companies() {
@@ -58,7 +57,7 @@ public class CompanyServiceTest {
         when(companyRepository.findById(any())).thenReturn(Optional.of(expected));
 
         //when
-        final Company company = companyService.getCompany(companyId1);
+        final Company company = companyService.getCompany(companyId);
 
         //then
         assertEquals(expected, company);
@@ -67,7 +66,7 @@ public class CompanyServiceTest {
     @Test
     void should_return_employee_list_when_get_a_company_employee_list_given_a_company() throws CompanyNotFoundException {
         //given
-        final Company expected = new Company(companyName1, new ArrayList<>());
+        final Company expected = new Company(companyName, new ArrayList<>());
         when(companyRepository.findById(any())).thenReturn(Optional.of(expected));
 
         //when
@@ -117,7 +116,7 @@ public class CompanyServiceTest {
         when(companyRepository.save(any())).thenReturn(expected);
 
         //when
-        Company actual = companyService.updateCompany(companyId1, expected);
+        Company actual = companyService.updateCompany(companyId, expected);
 
         //then
         assertEquals(expected, actual);
@@ -128,9 +127,9 @@ public class CompanyServiceTest {
         //given
 
         //when
-        companyService.deleteCompany(companyId1);
+        companyService.deleteCompany(companyId);
 
         //then
-        verify(companyRepository, times(1)).deleteById(companyId1);
+        verify(companyRepository, times(1)).deleteById(companyId);
     }
 }

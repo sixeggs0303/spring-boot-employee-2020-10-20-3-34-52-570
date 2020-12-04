@@ -20,11 +20,6 @@ public class CompanyService {
     @Autowired
     private EmployeeService employeeService;
 
-    public CompanyService(CompanyRepository companyRepository, EmployeeService employeeService) {
-        this.companyRepository = companyRepository;
-        this.employeeService = employeeService;
-    }
-
     public List<Company> getCompanies() {
         return companyRepository.findAll();
     }

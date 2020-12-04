@@ -6,6 +6,9 @@ public class EmployeeRequest {
     private String gender;
     private Integer salary;
 
+    public EmployeeRequest() {
+    }
+
     public EmployeeRequest(String name, Integer age, String gender, Integer salary) {
         this.name = name;
         this.age = age;
