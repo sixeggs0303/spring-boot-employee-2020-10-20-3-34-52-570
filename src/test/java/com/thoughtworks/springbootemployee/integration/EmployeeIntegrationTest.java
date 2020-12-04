@@ -36,7 +36,7 @@ public class EmployeeIntegrationTest {
     @Test
     void should_return_all_employees_when_get_all_given_employees() throws Exception {
         //given
-        Employee employee = new Employee("Marcus", 18, "male", 50000);
+        Employee employee = new Employee("Marcus", 22, "male", 50000);
         employeeRepository.save(employee);
 
         //when
@@ -45,7 +45,7 @@ public class EmployeeIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").isString())
                 .andExpect(jsonPath("$[0].name").value("Marcus"))
-                .andExpect(jsonPath("$[0].age").value(18))
+                .andExpect(jsonPath("$[0].age").value(22))
                 .andExpect(jsonPath("$[0].gender").value("male"))
                 .andExpect(jsonPath("$[0].salary").value(50000));
     }
@@ -53,7 +53,7 @@ public class EmployeeIntegrationTest {
     @Test
     void should_return_one_employee_when_get_employee_given_employee_id() throws Exception {
         //given
-        Employee employee = employeeRepository.save(new Employee("Marcus", 18, "male", 50000));
+        Employee employee = employeeRepository.save(new Employee("Marcus", 22, "male", 50000));
 
         //when
         //then
@@ -61,7 +61,7 @@ public class EmployeeIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isString())
                 .andExpect(jsonPath("$.name").value("Marcus"))
-                .andExpect(jsonPath("$.age").value(18))
+                .andExpect(jsonPath("$.age").value(22))
                 .andExpect(jsonPath("$.gender").value("male"))
                 .andExpect(jsonPath("$.salary").value(50000));
     }
@@ -84,23 +84,23 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$[0].salary").value(50000));
     }
 
-    // use 3 and 2 as example
     @Test
     void should_return_correct_page_when_get_employee_given_employees_and_page_and_page_size() throws Exception {
         //given
-        employeeRepository.save(new Employee("Marcus", 18, "male", 50000));
-        employeeRepository.save(new Employee("Linne", 18, "female", 50000));
+        employeeRepository.save(new Employee("Marcus", 22, "male", 50000));
+        employeeRepository.save(new Employee("Theo", 22, "male", 0));
 
         //when
         //then
         mockMvc.perform(get(EMPLOYEES_URI).param("page", "1").param("pageSize", "1"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.*", hasSize(1)))
-                .andExpect(jsonPath("$[0].id").isString())
-                .andExpect(jsonPath("$[0].name").value("Marcus"))
-                .andExpect(jsonPath("$[0].age").value(18))
-                .andExpect(jsonPath("$[0].gender").value("male"))
-                .andExpect(jsonPath("$[0].salary").value(50000));
+                .andExpect(jsonPath("$.pageable.pageNumber").value(0))
+                .andExpect(jsonPath("$.pageable.pageSize").value(1))
+                .andExpect(jsonPath("$.content[0].id").isString())
+                .andExpect(jsonPath("$.content[0].name").value("Marcus"))
+                .andExpect(jsonPath("$.content[0].age").value(22))
+                .andExpect(jsonPath("$.content[0].gender").value("male"))
+                .andExpect(jsonPath("$.content[0].salary").value(50000));
     }
 
     @Test
@@ -163,7 +163,7 @@ public class EmployeeIntegrationTest {
     @Test
     void should_return_no_content_when_delete_given_only_one_employee() throws Exception {
         //given
-        Employee employee = employeeRepository.save(new Employee("Marcus", 18, "male", 50000));
+        Employee employee = employeeRepository.save(new Employee("Marcus", 22, "male", 50000));
         //when
         //then
         mockMvc.perform(delete(EMPLOYEES_URI + employee.getId()))
