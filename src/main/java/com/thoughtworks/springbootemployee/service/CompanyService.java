@@ -5,6 +5,7 @@ import com.thoughtworks.springbootemployee.exception.EmployeeNotFoundException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
+import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,15 +19,19 @@ public class CompanyService {
     @Autowired
     private CompanyRepository companyRepository;
     @Autowired
+    private EmployeeRepository employeeRepository;
+    @Autowired
     private EmployeeService employeeService;
 
     public List<Company> getCompanies() {
         return companyRepository.findAll();
     }
 
-    //confirm employee id exist
-    public Company createCompany(Company company) {
-        return companyRepository.save(company);
+    public Company createCompany(Company company) throws EmployeeNotFoundException {
+        if (company.getEmployeesId().stream().allMatch(employeeService::employeeExists)) {
+            return companyRepository.save(company);
+        }
+        throw new EmployeeNotFoundException();
     }
 
     public Company getCompany(String companyId) throws CompanyNotFoundException {
@@ -41,11 +46,14 @@ public class CompanyService {
         return companyRepository.findAll(PageRequest.of(page - 1, pageSize));
     }
 
-    //confirm employee id exist
-    public Company updateCompany(String companyId, Company companyUpdated) throws CompanyNotFoundException {
+    public Company updateCompany(String companyId, Company companyUpdated) throws CompanyNotFoundException, EmployeeNotFoundException {
         if (this.companyRepository.existsById(companyId)) {
-            companyUpdated.setCompanyId(companyId);
-            return companyRepository.save(companyUpdated);
+            if (companyUpdated.getEmployeesId().stream().allMatch(employeeService::employeeExists)) {
+                companyUpdated.setCompanyId(companyId);
+                return companyRepository.save(companyUpdated);
+            } else {
+                throw new EmployeeNotFoundException();
+            }
         }
         throw new CompanyNotFoundException();
     }

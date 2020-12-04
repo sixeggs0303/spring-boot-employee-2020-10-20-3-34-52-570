@@ -58,4 +58,8 @@ public class EmployeeService {
                 .stream(employeeRepository.findAllById(employeesId).spliterator(), false)
                 .collect(Collectors.toList());
     }
+
+    public Boolean employeeExists(String employeeId) {
+        return employeeRepository.existsById(employeeId);
+    }
 }

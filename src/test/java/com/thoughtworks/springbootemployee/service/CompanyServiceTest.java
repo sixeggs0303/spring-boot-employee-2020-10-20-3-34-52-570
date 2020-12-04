@@ -1,13 +1,16 @@
 package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.exception.CompanyNotFoundException;
+import com.thoughtworks.springbootemployee.exception.EmployeeNotFoundException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
+import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -95,9 +98,9 @@ public class CompanyServiceTest {
     }
 
     @Test
-    void should_return_a_company_when_create_given_a_company() {
+    void should_return_a_company_when_create_given_a_company() throws EmployeeNotFoundException {
         //given
-        final Company expected = new Company();
+        final Company expected = new Company("Google", new ArrayList<>());
         when(companyRepository.save(any())).thenReturn(expected);
 
         //when
@@ -109,9 +112,9 @@ public class CompanyServiceTest {
 
     // use argument capture
     @Test
-    void should_return_updated_company_when_update_given_a_company_id_and_company_updates() throws CompanyNotFoundException {
+    void should_return_updated_company_when_update_given_a_company_id_and_company_updates() throws CompanyNotFoundException, EmployeeNotFoundException {
         //given
-        final Company expected = new Company();
+        final Company expected = new Company("Google", new ArrayList<>());
         when(companyRepository.existsById(any())).thenReturn(true);
         when(companyRepository.save(any())).thenReturn(expected);
 
