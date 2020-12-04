@@ -59,6 +59,15 @@ public class EmployeeServiceTest {
     }
 
     @Test
+    void should_throw_employee_not_found_exception_when_get_employee_given_wrong_employee() {
+        //when
+        final EmployeeNotFoundException EmployeeNotFoundException = assertThrows(EmployeeNotFoundException.class, () -> employeeService.getEmployee(employeeId));
+
+        //then
+        assertEquals("Employee Not Found.", EmployeeNotFoundException.getMessage());
+    }
+
+    @Test
     void should_return_only_male_employee_when_get_employee_given_gender_is_male() {
         //given
         final List<Employee> fullList = new ArrayList<>();
@@ -120,6 +129,18 @@ public class EmployeeServiceTest {
     }
 
     @Test
+    void should_throw_employee_not_found_exception_when_update_employee_given_wrong_employee_id() {
+        //given
+        Employee employee = new Employee();
+
+        //when
+        final EmployeeNotFoundException EmployeeNotFoundException = assertThrows(EmployeeNotFoundException.class, () -> employeeService.updateEmployee(employeeId, employee));
+
+        //then
+        assertEquals("Employee Not Found.", EmployeeNotFoundException.getMessage());
+    }
+
+    @Test
     void should_call_repository_delete_by_id_when_delete_employee_given_an_employee_id() throws EmployeeNotFoundException {
         //given
         when(employeeRepository.existsById(any())).thenReturn(true);
@@ -129,5 +150,14 @@ public class EmployeeServiceTest {
 
         //then
         verify(employeeRepository, times(1)).deleteById(employeeId);
+    }
+
+    @Test
+    void should_throw_employee_not_found_exception_when_delete_employee_given_wrong_employee_id() {
+        //when
+        final EmployeeNotFoundException EmployeeNotFoundException = assertThrows(EmployeeNotFoundException.class, () -> employeeService.deleteEmployee(employeeId));
+
+        //then
+        assertEquals("Employee Not Found.", EmployeeNotFoundException.getMessage());
     }
 }
