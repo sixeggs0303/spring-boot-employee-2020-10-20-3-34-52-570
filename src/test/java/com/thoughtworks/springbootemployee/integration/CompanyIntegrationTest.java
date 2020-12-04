@@ -75,7 +75,7 @@ public class CompanyIntegrationTest {
     @Test
     void should_return_an_employee_list_when_get_employee_list_given_company_id() throws Exception {
         //given
-        Employee employee1 = employeeRepository.save(new Employee("Theo", 18, "male", 50000));
+        Employee employee1 = employeeRepository.save(new Employee("Marcus", 18, "male", 50000));
         Employee employee2 = employeeRepository.save(new Employee("Linne", 18, "female", 50000));
         List<String> employeeIdList = new ArrayList<>();
         employeeIdList.add(employee1.getId());
@@ -142,7 +142,7 @@ public class CompanyIntegrationTest {
     @Test
     void should_return_updated_company_when_update_given_company_id() throws Exception {
         //given
-        Employee employee1 = employeeRepository.save(new Employee("Theo", 18, "male", 50000));
+        Employee employee1 = employeeRepository.save(new Employee("Marcus", 18, "male", 50000));
         Employee employee2 = employeeRepository.save(new Employee("Linne", 18, "female", 50000));
         List<String> employeeIdList = new ArrayList<>();
         employeeIdList.add(employee1.getId());

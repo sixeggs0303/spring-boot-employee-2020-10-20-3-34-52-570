@@ -6,6 +6,9 @@ public class CompanyRequest {
     private String companyName;
     private List<String> employeesId;
 
+    public CompanyRequest() {
+    }
+
     public CompanyRequest(String companyName, List<String> employeesId) {
         this.companyName = companyName;
         this.employeesId = employeesId;
