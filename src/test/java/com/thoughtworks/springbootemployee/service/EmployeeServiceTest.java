@@ -118,14 +118,16 @@ public class EmployeeServiceTest {
         assertEquals(expected, actual);
     }
 
-    @Test
-    void should_call_repository_delete_by_id_when_delete_employee_given_an_employee_id() throws EmployeeNotFoundException {
-        //given
-
-        //when
-        employeeService.deleteEmployee(employeeId1);
-
-        //then
-        verify(employeeRepository, times(1)).deleteById(employeeId1);
-    }
+//    @Test
+//    void should_call_repository_delete_by_id_when_delete_employee_given_an_employee_id() throws EmployeeNotFoundException {
+//        //given
+//        Employee expected = new Employee();
+//
+//        //when
+//        final Employee actual = employeeService.createEmployee(expected);
+//        employeeService.deleteEmployee(actual.getId());
+//
+//        //then
+//        verify(employeeRepository, times(1)).deleteById(actual.getId());
+//    }
 }

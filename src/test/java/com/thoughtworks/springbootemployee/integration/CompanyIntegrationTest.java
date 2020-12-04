@@ -102,10 +102,11 @@ public class CompanyIntegrationTest {
         //then
         mockMvc.perform(get(COMPANIES_URI).param("page", "1").param("pageSize", "1"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.*", hasSize(1)))
-                .andExpect(jsonPath("$[0].companyName").value("Facebook"))
-                .andExpect(jsonPath("$[0].employeesNumber").value(0))
-                .andExpect(jsonPath("$[0].employees").value(new ArrayList<>()));
+                .andExpect(jsonPath("$.pageable.pageSize").value(1))
+                .andExpect(jsonPath("$.pageable.pageNumber").value(0))
+                .andExpect(jsonPath("$.content[0].companyName").value("Facebook"))
+                .andExpect(jsonPath("$.content[0].employeesNumber").value(0))
+                .andExpect(jsonPath("$.content[0].employees").value(new ArrayList<>()));
     }
 
     @Test
@@ -141,16 +142,17 @@ public class CompanyIntegrationTest {
     @Test
     void should_return_updated_company_when_update_given_company_id() throws Exception {
         //given
+        Employee employee1 = employeeRepository.save(new Employee("Theo", 18, "male", 50000));
+        Employee employee2 = employeeRepository.save(new Employee("Linne", 18, "female", 50000));
         List<String> employeeIdList = new ArrayList<>();
-        employeeIdList.add("5fc8bb88a807b8276b16bbde");
-        employeeIdList.add("5fc8bb91a807b8276b16bbdf");
-        employeeIdList.add("5fc8bb9aa807b8276b16bbe0");
+        employeeIdList.add(employee1.getId());
+        employeeIdList.add(employee2.getId());
         Company company = companyRepository.save(new Company("Facebook", employeeIdList));
         String companyAsJson = "{\n" +
                 "    \"companyName\": \"OOCL\",\n" +
-                "    \"employeesId\": [\"5fc8bb88a807b8276b16bbde\", \"5fc8bb91a807b8276b16bbdf\"]\n" +
+                "    \"employeesId\": [\""+employee1.getId()+"\"]\n" +
                 "}";
-        employeeIdList.remove("5fc8bb9aa807b8276b16bbe0");
+        employeeIdList.remove(employee2.getId());
 
         //when
         //then
