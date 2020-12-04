@@ -34,14 +34,9 @@ public class CompanyIntegrationTest {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    // put the 2 aftereach together
     @AfterEach
-    void tearDownCompany() {
+    void tearDownCompanyAndEmployee() {
         companyRepository.deleteAll();
-    }
-
-    @AfterEach
-    void tearDownEmployee() {
         employeeRepository.deleteAll();
     }
 
