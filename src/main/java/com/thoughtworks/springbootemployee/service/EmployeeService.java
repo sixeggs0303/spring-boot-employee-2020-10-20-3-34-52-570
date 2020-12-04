@@ -48,8 +48,12 @@ public class EmployeeService {
         throw new EmployeeNotFoundException();
     }
 
-    public void deleteEmployee(String employeeId) {
-        employeeRepository.deleteById(employeeId);
+    public void deleteEmployee(String employeeId) throws EmployeeNotFoundException {
+        if (this.employeeRepository.existsById(employeeId)) {
+            employeeRepository.deleteById(employeeId);
+        }
+        throw new EmployeeNotFoundException();
+
     }
 
     public List<Employee> getEmployeesById(List<String> employeesId) {

@@ -120,7 +120,7 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void should_call_repository_delete_by_id_when_delete_employee_given_an_employee_id() {
+    void should_call_repository_delete_by_id_when_delete_employee_given_an_employee_id() throws EmployeeNotFoundException {
         //given
 
         //when
