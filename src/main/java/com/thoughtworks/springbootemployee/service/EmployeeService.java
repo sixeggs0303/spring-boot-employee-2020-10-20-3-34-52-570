@@ -8,6 +8,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class EmployeeService {
@@ -48,5 +50,11 @@ public class EmployeeService {
 
     public void deleteEmployee(String employeeId) {
         employeeRepository.deleteById(employeeId);
+    }
+
+    public List<Employee> getEmployeesById(List<String> employeesId) {
+        return StreamSupport
+                .stream(employeeRepository.findAllById(employeesId).spliterator(), false)
+                .collect(Collectors.toList());
     }
 }

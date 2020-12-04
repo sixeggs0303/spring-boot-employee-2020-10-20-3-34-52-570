@@ -18,8 +18,6 @@ public class CompanyService {
     @Autowired
     private EmployeeService employeeService;
 
-
-    // change null to exception
     public CompanyService(CompanyRepository companyRepository, EmployeeService employeeService) {
         this.companyRepository = companyRepository;
         this.employeeService = employeeService;
@@ -38,10 +36,8 @@ public class CompanyService {
         return companyRepository.findById(companyId).orElse(null);
     }
 
-    public List<Employee> getEmployeeList(String companyId) throws EmployeeNotFoundException {
-        return getCompany(companyId).getEmployeesId().stream()
-                .map(this.employeeService::getEmployee)
-                .collect(Collectors.toList());
+    public List<Employee> getEmployeeList(String companyId){
+        return employeeService.getEmployeesById(getCompany(companyId).getEmployeesId());
     }
 
     public List<Company> getCompaniesPaginized(int page, int pageSize) {
