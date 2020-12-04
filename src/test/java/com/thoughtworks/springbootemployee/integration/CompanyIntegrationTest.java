@@ -57,7 +57,7 @@ public class CompanyIntegrationTest {
         //then
         mockMvc.perform(get(COMPANIES_URI))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.*",hasSize(1)))
+                .andExpect(jsonPath("$.*", hasSize(1)))
                 .andExpect(jsonPath("$[0].companyName").value("Facebook"))
                 .andExpect(jsonPath("$[0].employeesNumber").value(0))
                 .andExpect(jsonPath("$[0].employees").value(new ArrayList()));

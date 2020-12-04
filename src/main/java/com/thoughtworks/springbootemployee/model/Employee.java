@@ -13,7 +13,8 @@ public class Employee {
     private String gender;
     private Integer salary;
 
-    public Employee(){ }
+    public Employee() {
+    }
 
     public Employee(String name, int age, String gender, int salary) {
         this.name = name;

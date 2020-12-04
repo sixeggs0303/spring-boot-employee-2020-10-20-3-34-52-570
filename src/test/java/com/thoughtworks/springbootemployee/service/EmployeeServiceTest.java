@@ -1,4 +1,4 @@
-package com.thoughtworks.springbootemployee;
+package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.exception.EmployeeNotFoundException;
 import com.thoughtworks.springbootemployee.model.Employee;
@@ -109,7 +109,7 @@ public class EmployeeServiceTest {
     void should_return_updated_employee_when_update_employee_given_an_employee_id_and_employee() throws EmployeeNotFoundException {
         //given
         Employee expected = new Employee();
-        when(employeeRepository.findById(any())).thenReturn(Optional.of(expected));
+        when(employeeRepository.existsById(any())).thenReturn(true);
         when(employeeRepository.save(any())).thenReturn(expected);
 
         //when

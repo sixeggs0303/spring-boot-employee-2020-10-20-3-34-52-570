@@ -4,7 +4,6 @@ import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.response.CompanyResponse;
 import com.thoughtworks.springbootemployee.service.CompanyService;
-import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +18,6 @@ public class CompanyController {
     private final List<Company> companies = new ArrayList<>();
     @Autowired
     private CompanyService companyService;
-    @Autowired
-    private EmployeeService employeeService;
 
     @GetMapping
     public List<CompanyResponse> getCompanies() {
@@ -59,15 +56,15 @@ public class CompanyController {
         companyService.deleteCompany(companyId);
     }
 
-    private CompanyResponse formatCompanyResponse(Company company){
-        if(company==null){
+    private CompanyResponse formatCompanyResponse(Company company) {
+        if (company == null) {
             return null;
         }
         List<Employee> employees = this.companyService.getEmployeeList(company.getCompanyId());
         return new CompanyResponse(company.getCompanyName(), employees.size(), employees);
     }
 
-    private List<CompanyResponse> formatListOfCompanyResponse(List<Company> companies){
+    private List<CompanyResponse> formatListOfCompanyResponse(List<Company> companies) {
         return companies.stream()
                 .map(this::formatCompanyResponse)
                 .collect(Collectors.toList());

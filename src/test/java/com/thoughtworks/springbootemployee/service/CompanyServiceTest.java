@@ -1,4 +1,4 @@
-package com.thoughtworks.springbootemployee;
+package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
@@ -114,7 +114,7 @@ public class CompanyServiceTest {
     void should_return_updated_company_when_update_given_a_company_id_and_company_updates() {
         //given
         final Company expected = new Company();
-        when(companyRepository.findById(any())).thenReturn(Optional.of(expected));
+        when(companyRepository.existsById(any())).thenReturn(true);
         when(companyRepository.save(any())).thenReturn(expected);
 
         //when

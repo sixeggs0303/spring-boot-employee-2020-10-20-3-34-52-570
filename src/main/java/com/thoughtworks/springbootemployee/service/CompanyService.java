@@ -36,7 +36,7 @@ public class CompanyService {
         return companyRepository.findById(companyId).orElse(null);
     }
 
-    public List<Employee> getEmployeeList(String companyId){
+    public List<Employee> getEmployeeList(String companyId) {
         return employeeService.getEmployeesById(getCompany(companyId).getEmployeesId());
     }
 
@@ -46,7 +46,7 @@ public class CompanyService {
 
     //confirm employee id exist
     public Company updateCompany(String companyId, Company companyUpdated) {
-        if (getCompany(companyId) != null) {
+        if (this.companyRepository.existsById(companyId)) {
             companyUpdated.setCompanyId(companyId);
             return companyRepository.save(companyUpdated);
         }

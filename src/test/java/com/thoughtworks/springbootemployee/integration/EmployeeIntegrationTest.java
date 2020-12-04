@@ -36,8 +36,8 @@ public class EmployeeIntegrationTest {
     @Test
     void should_return_all_employees_when_get_all_given_employees() throws Exception {
         //given
-       Employee employee = new Employee("Theo", 18, "male", 50000);
-       employeeRepository.save(employee);
+        Employee employee = new Employee("Theo", 18, "male", 50000);
+        employeeRepository.save(employee);
 
         //when
         //then
@@ -57,7 +57,7 @@ public class EmployeeIntegrationTest {
 
         //when
         //then
-        mockMvc.perform(get(EMPLOYEES_URI+employee.getId()))
+        mockMvc.perform(get(EMPLOYEES_URI + employee.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isString())
                 .andExpect(jsonPath("$.name").value("Theo"))
@@ -116,8 +116,8 @@ public class EmployeeIntegrationTest {
         //when
         //then
         mockMvc.perform(post(EMPLOYEES_URI)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(employeeAsJson))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(employeeAsJson))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isString())
                 .andExpect(jsonPath("$.name").value("Theo"))
@@ -144,7 +144,7 @@ public class EmployeeIntegrationTest {
 
         //when
         //then
-        mockMvc.perform(put(EMPLOYEES_URI+employee.getId())
+        mockMvc.perform(put(EMPLOYEES_URI + employee.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(employeeAsJson))
                 .andExpect(status().isOk())
@@ -166,7 +166,7 @@ public class EmployeeIntegrationTest {
         Employee employee = employeeRepository.save(new Employee("Theo", 18, "male", 50000));
         //when
         //then
-        mockMvc.perform(delete(EMPLOYEES_URI+employee.getId()))
+        mockMvc.perform(delete(EMPLOYEES_URI + employee.getId()))
                 .andExpect(status().isNoContent());
 
         List<Employee> employees = employeeRepository.findAll();

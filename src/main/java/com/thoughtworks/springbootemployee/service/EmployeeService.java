@@ -25,7 +25,7 @@ public class EmployeeService {
     }
 
     public List<Employee> getEmployeesPaginized(Integer page, Integer pageSize) {
-        return employeeRepository.findAll(PageRequest.of(page-1, pageSize)).toList();
+        return employeeRepository.findAll(PageRequest.of(page - 1, pageSize)).toList();
     }
 
     public Employee getEmployee(String employeeId) throws EmployeeNotFoundException {
@@ -41,7 +41,7 @@ public class EmployeeService {
     }
 
     public Employee updateEmployee(String employeeId, Employee employee) throws EmployeeNotFoundException {
-        if(getEmployee(employeeId)!=null){
+        if (this.employeeRepository.existsById(employeeId)) {
             employee.setId(employeeId);
             return employeeRepository.save(employee);
         }

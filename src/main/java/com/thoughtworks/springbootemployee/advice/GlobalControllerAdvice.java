@@ -11,7 +11,7 @@ public class GlobalControllerAdvice {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({IllegalArgumentException.class})
-    public ErrorResponse handleBadRequest(IllegalArgumentException exception){
+    public ErrorResponse handleBadRequest(IllegalArgumentException exception) {
         return new ErrorResponse(exception.getMessage(), HttpStatus.BAD_REQUEST.name());
     }
 

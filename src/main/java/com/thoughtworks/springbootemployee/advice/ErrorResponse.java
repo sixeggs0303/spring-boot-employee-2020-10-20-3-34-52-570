@@ -1,6 +1,6 @@
 package com.thoughtworks.springbootemployee.advice;
 
-public class ErrorResponse{
+public class ErrorResponse {
     private final String message;
     private final String status;
 
@@ -9,11 +9,11 @@ public class ErrorResponse{
         this.status = status;
     }
 
-    public String getMessage(){
+    public String getMessage() {
         return this.message;
     }
 
-    public String getStatus(){
+    public String getStatus() {
         return this.status;
     }
 }
