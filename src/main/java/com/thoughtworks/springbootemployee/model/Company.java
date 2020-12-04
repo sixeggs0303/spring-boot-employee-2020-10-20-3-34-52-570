@@ -13,6 +13,9 @@ public class Company {
     private String companyName;
     private List<String> employeesId;
 
+    public Company() {
+    }
+
     public Company(String companyName, List<String> employeesId) {
         this.companyName = companyName;
         this.employeesId = employeesId;
@@ -22,18 +25,23 @@ public class Company {
         return companyId;
     }
 
-    public Company() {
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
     }
 
     public String getCompanyName() {
         return companyName;
     }
 
-    public void setCompanyId(String companyId) {
-        this.companyId = companyId;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public List<String> getEmployeesId() {
-        return this.employeesId;
+        return employeesId;
+    }
+
+    public void setEmployeesId(List<String> employeesId) {
+        this.employeesId = employeesId;
     }
 }

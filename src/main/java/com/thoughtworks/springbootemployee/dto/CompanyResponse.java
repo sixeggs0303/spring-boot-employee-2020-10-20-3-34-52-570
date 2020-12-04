@@ -28,27 +28,27 @@ public class CompanyResponse {
         this.companyId = companyId;
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public void setEmployeesNumber(int employeesNumber) {
-        this.employeesNumber = employeesNumber;
-    }
-
-    public void setEmployees(List<Employee> employees) {
-        this.employees = employees;
-    }
-
     public String getCompanyName() {
         return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public int getEmployeesNumber() {
         return employeesNumber;
     }
 
+    public void setEmployeesNumber(int employeesNumber) {
+        this.employeesNumber = employeesNumber;
+    }
+
     public List<Employee> getEmployees() {
         return employees;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
     }
 }

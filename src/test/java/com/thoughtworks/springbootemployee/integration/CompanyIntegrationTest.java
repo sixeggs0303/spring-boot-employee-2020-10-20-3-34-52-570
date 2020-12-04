@@ -4,7 +4,6 @@ import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
-import org.hamcrest.collection.ArrayAsIterableMatcher;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -91,7 +91,6 @@ public class CompanyIntegrationTest {
                 .andExpect(jsonPath("$[1].id").value(employee2.getId()));
     }
 
-    // add 3 and 2 example
     @Test
     void should_return_correct_page_when_get_all_given_companies_and_page_and_page_size() throws Exception {
         //given
@@ -116,11 +115,23 @@ public class CompanyIntegrationTest {
                 "    \"companyName\": \"OOCL\",\n" +
                 "    \"employeesId\": [\"5fc8bb88a807b8276b16bbde\", \"5fc8bb91a807b8276b16bbdf\", \"5fc8bb9aa807b8276b16bbe0\"]\n" +
                 "}";
-        List<String> employeeIdList = new ArrayList<>();
-        employeeIdList.add("5fc8bb88a807b8276b16bbde");
-        employeeIdList.add("5fc8bb91a807b8276b16bbdf");
-        employeeIdList.add("5fc8bb9aa807b8276b16bbe0");
 
+        List<String> employeeIds = new ArrayList<>();
+        employeeIds.add("5fc8bb88a807b8276b16bbde");
+        employeeIds.add("5fc8bb91a807b8276b16bbdf");
+        employeeIds.add("5fc8bb9aa807b8276b16bbe0");
+
+        Employee employee1 = new Employee();
+        Employee employee2 = new Employee();
+        Employee employee3 = new Employee();
+
+        employee1.setId("5fc8bb88a807b8276b16bbde");
+        employee2.setId("5fc8bb91a807b8276b16bbdf");
+        employee3.setId("5fc8bb9aa807b8276b16bbe0");
+
+        List<Employee> employees = new ArrayList<>(Arrays.asList(employee1, employee2, employee3));
+
+        employeeRepository.saveAll(employees);
 
         //when
         //then
@@ -130,15 +141,17 @@ public class CompanyIntegrationTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.companyId").isString())
                 .andExpect(jsonPath("$.companyName").value("OOCL"))
-                .andExpect(jsonPath("$.employeesId").value(employeeIdList));
+                .andExpect(jsonPath("$.employeesNumber").value(3))
+                .andExpect(jsonPath("$.employees[0].id").value(employee1.getId()))
+                .andExpect(jsonPath("$.employees[1].id").value(employee2.getId()))
+                .andExpect(jsonPath("$.employees[2].id").value(employee3.getId()));
 
         List<Company> companies = companyRepository.findAll();
         assertEquals(1, companies.size());
         assertEquals("OOCL", companies.get(0).getCompanyName());
-        assertEquals(employeeIdList, companies.get(0).getEmployeesId());
+        assertEquals(employeeIds, companies.get(0).getEmployeesId());
     }
 
-    // add employees, use employees' id to input as employee list
     @Test
     void should_return_updated_company_when_update_given_company_id() throws Exception {
         //given
@@ -150,7 +163,7 @@ public class CompanyIntegrationTest {
         Company company = companyRepository.save(new Company("Facebook", employeeIdList));
         String companyAsJson = "{\n" +
                 "    \"companyName\": \"OOCL\",\n" +
-                "    \"employeesId\": [\""+employee1.getId()+"\"]\n" +
+                "    \"employeesId\": [\"" + employee1.getId() + "\"]\n" +
                 "}";
         employeeIdList.remove(employee2.getId());
 
@@ -162,7 +175,8 @@ public class CompanyIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.companyId").isString())
                 .andExpect(jsonPath("$.companyName").value("OOCL"))
-                .andExpect(jsonPath("$.employeesId").value(employeeIdList));
+                .andExpect(jsonPath("$.employeesNumber").value(1))
+                .andExpect(jsonPath("$.employees[0].id").value(employee1.getId()));
 
         List<Company> companies = companyRepository.findAll();
         assertEquals(1, companies.size());
